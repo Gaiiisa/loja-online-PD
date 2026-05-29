@@ -1,0 +1,3636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroGrau — Streetwear Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — ZeroGrau Design System
+═══════════════════════════════════════════════ */
+:root {
+  --c-black:    #0a0a0a;
+  --c-void:     #111111;
+  --c-carbon:   #1a1a1a;
+  --c-ash:      #2a2a2a;
+  --c-smoke:    #444444;
+  --c-fog:      #888888;
+  --c-mist:     #bbbbbb;
+  --c-snow:     #f0f0f0;
+  --c-white:    #ffffff;
+  --c-ice:      #00BFFF;
+  --c-ice-dim:  #007fb5;
+  --c-ice-glow: rgba(0,191,255,0.15);
+  --c-ice-halo: rgba(0,191,255,0.07);
+  --c-error:    #FF4D4F;
+  --c-success:  #52C41A;
+  --c-warn:     #FAAD14;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono:    'Space Mono', monospace;
+  --font-body:    'DM Sans', sans-serif;
+  --nav-h:    64px;
+  --r-sm:     4px;
+  --r-md:     8px;
+  --r-lg:     16px;
+  --r-xl:     24px;
+  --shadow-card: 0 2px 20px rgba(0,0,0,0.6);
+  --shadow-ice:  0 0 30px rgba(0,191,255,0.2);
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ═══════════════════════════════════════════════ RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--c-black);
+  color: var(--c-snow);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+input, textarea, select { font-family: inherit; outline: none; }
+img { max-width: 100%; display: block; }
+
+/* ═══════════════════════════════════════════════ SCROLLBAR */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--c-void); }
+::-webkit-scrollbar-thumb { background: var(--c-ash); border-radius: 10px; }
+
+/* ═══════════════════════════════════════════════ VIEWS ROUTER */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ═══════════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════════ */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: var(--nav-h);
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center;
+  padding: 0 40px;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  color: var(--c-white);
+  display: flex; align-items: center; gap: 8px;
+  margin-right: 48px;
+}
+.nav-brand span { color: var(--c-ice); }
+.nav-links {
+  display: flex; gap: 6px; flex: 1;
+}
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  transition: color var(--transition), background var(--transition);
+  background: transparent;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--c-white);
+  background: rgba(255,255,255,0.06);
+}
+.nav-link.active { color: var(--c-ice); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-search-wrap {
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-md);
+  padding: 0 12px;
+  gap: 8px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.nav-search-wrap:focus-within {
+  border-color: var(--c-ice);
+  box-shadow: 0 0 0 3px var(--c-ice-halo);
+}
+.nav-search {
+  background: transparent;
+  border: none;
+  color: var(--c-snow);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  width: 160px;
+  padding: 8px 0;
+}
+.nav-search::placeholder { color: var(--c-smoke); }
+.nav-icon-btn {
+  position: relative;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--c-fog);
+  width: 40px; height: 40px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+.nav-icon-btn:hover { color: var(--c-white); border-color: rgba(255,255,255,0.2); }
+.nav-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--c-ice);
+  color: var(--c-black);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  display: none;
+}
+.nav-badge.show { display: flex; }
+.btn-login {
+  background: transparent;
+  border: 1px solid rgba(0,191,255,0.4);
+  color: var(--c-ice);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  border-radius: var(--r-md);
+  transition: all var(--transition);
+}
+.btn-login:hover { background: var(--c-ice-glow); border-color: var(--c-ice); }
+
+/* ═══════════════════════════════════════════════
+   VIEW: HOME / HERO
+═══════════════════════════════════════════════ */
+#view-home { padding-top: var(--nav-h); }
+
+.hero {
+  position: relative;
+  min-height: calc(100vh - var(--nav-h));
+  display: flex; align-items: center;
+  overflow: hidden;
+  background: var(--c-black);
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(0,191,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 70%, rgba(0,80,120,0.06) 0%, transparent 50%),
+    linear-gradient(160deg, #0a0a0a 0%, #111520 100%);
+}
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,191,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,191,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 60% 50%, black 0%, transparent 70%);
+}
+.hero-content {
+  position: relative; z-index: 1;
+  padding: 80px 80px 80px 80px;
+  max-width: 700px;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--c-ice);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--c-ice);
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 10vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--c-white);
+  text-shadow: 0 0 80px rgba(0,191,255,0.15);
+  margin-bottom: 28px;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--c-ice);
+  display: block;
+}
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--c-fog);
+  max-width: 460px;
+  margin-bottom: 44px;
+}
+.hero-actions { display: flex; gap: 14px; align-items: center; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--c-ice);
+  color: var(--c-black);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 14px 28px;
+  border-radius: var(--r-md);
+  border: none;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+}
+.btn-primary:hover::after { transform: translateX(0); }
+.btn-primary:hover { box-shadow: 0 0 24px rgba(0,191,255,0.45); transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--c-mist);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  padding: 14px 28px;
+  border-radius: var(--r-md);
+  transition: all var(--transition);
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: var(--c-white); }
+.hero-stats {
+  display: flex; gap: 48px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--c-white);
+  line-height: 1;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-top: 4px;
+}
+.hero-visual {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 50%;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.hero-product-showcase {
+  position: relative;
+  width: 420px; height: 520px;
+}
+.showcase-card {
+  position: absolute;
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+.showcase-main {
+  width: 300px; height: 380px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,191,255,0.12);
+}
+.showcase-side1 {
+  width: 180px; height: 220px;
+  top: 10%; right: -20px;
+  z-index: 1;
+  opacity: 0.65;
+  transform: rotate(4deg) scale(0.9);
+}
+.showcase-side2 {
+  width: 160px; height: 200px;
+  bottom: 10%; left: -20px;
+  z-index: 1;
+  opacity: 0.55;
+  transform: rotate(-3deg) scale(0.85);
+}
+.showcase-img {
+  width: 100%; height: 70%;
+  background: var(--c-ash);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem;
+}
+.showcase-info { padding: 14px 16px; }
+.showcase-name {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--c-white);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.showcase-price {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--c-ice);
+}
+
+/* ═══════════════════════════════════════════════
+   FEATURES STRIP
+═══════════════════════════════════════════════ */
+.features-strip {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+  padding: 20px 80px;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+}
+.feature-item {
+  display: flex; align-items: center; gap: 10px;
+  flex: 1;
+  padding: 0 32px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.feature-item:first-child { padding-left: 0; }
+.feature-item:last-child { border-right: none; }
+.feature-icon { font-size: 1.3rem; }
+.feature-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--c-white);
+}
+.feature-desc { font-size: 0.72rem; color: var(--c-fog); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════
+   SECTION: PRODUTOS
+═══════════════════════════════════════════════ */
+.section {
+  padding: 80px 80px;
+}
+.section-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 48px;
+}
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-ice);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--c-white);
+}
+.section-link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--c-ice);
+  display: flex; align-items: center; gap: 6px;
+  transition: gap var(--transition);
+}
+.section-link:hover { gap: 12px; }
+
+/* ═══════════════════════════════════════════════
+   FILTER BAR
+═══════════════════════════════════════════════ */
+.filter-bar {
+  display: flex; gap: 8px; margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: var(--c-fog);
+  transition: all var(--transition);
+}
+.filter-btn:hover { border-color: rgba(255,255,255,0.3); color: var(--c-white); }
+.filter-btn.active {
+  background: var(--c-ice);
+  border-color: var(--c-ice);
+  color: var(--c-black);
+}
+
+/* ═══════════════════════════════════════════════
+   PRODUCT GRID
+═══════════════════════════════════════════════ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(0,191,255,0.2);
+}
+.product-img {
+  aspect-ratio: 4/3;
+  background: var(--c-ash);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.product-badge {
+  position: absolute; top: 12px; left: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.badge-new { background: var(--c-ice); color: var(--c-black); }
+.badge-sale { background: var(--c-error); color: var(--c-white); }
+.badge-hit { background: var(--c-warn); color: var(--c-black); }
+.product-actions-hover {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.product-card:hover .product-actions-hover { opacity: 1; }
+.action-btn-sm {
+  width: 44px; height: 44px;
+  background: var(--c-white);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--transition);
+  border: none;
+}
+.action-btn-sm:hover { background: var(--c-ice); transform: scale(1.08); }
+.product-info { padding: 16px; }
+.product-cat {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-bottom: 6px;
+}
+.product-name {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--c-snow);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.product-foot {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.product-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--c-white);
+  letter-spacing: 0.03em;
+}
+.product-old-price {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--c-smoke);
+  text-decoration: line-through;
+  margin-left: 6px;
+}
+.btn-add-cart {
+  background: rgba(0,191,255,0.12);
+  border: 1px solid rgba(0,191,255,0.3);
+  color: var(--c-ice);
+  font-size: 0.9rem;
+  width: 36px; height: 36px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.btn-add-cart:hover {
+  background: var(--c-ice);
+  color: var(--c-black);
+  border-color: var(--c-ice);
+  transform: scale(1.08);
+}
+
+/* ═══════════════════════════════════════════════
+   BANNER STRIP
+═══════════════════════════════════════════════ */
+.banner-strip {
+  margin: 0 80px;
+  background: linear-gradient(135deg, var(--c-ice-dim) 0%, var(--c-ice) 100%);
+  border-radius: var(--r-xl);
+  padding: 48px 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+  margin-bottom: 0;
+}
+.banner-strip::before {
+  content: '❄';
+  position: absolute; right: 60px;
+  font-size: 10rem;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.banner-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.6);
+  margin-bottom: 8px;
+}
+.banner-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  color: var(--c-black);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.btn-dark {
+  background: var(--c-black);
+  color: var(--c-ice);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 14px 32px;
+  border-radius: var(--r-md);
+  border: none;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-dark:hover { background: var(--c-void); transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════════
+   VIEW: CATALOG (Produtos)
+═══════════════════════════════════════════════ */
+#view-catalog {
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+}
+.catalog-hero {
+  background: linear-gradient(180deg, #0a0f18 0%, var(--c-black) 100%);
+  padding: 60px 80px 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.catalog-title {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  letter-spacing: 0.06em;
+  color: var(--c-white);
+  margin-bottom: 8px;
+}
+.catalog-sub { color: var(--c-fog); font-size: 0.9rem; }
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 200px);
+}
+.catalog-sidebar {
+  padding: 32px 24px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.01);
+}
+.sidebar-section { margin-bottom: 32px; }
+.sidebar-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-bottom: 14px;
+}
+.sidebar-options { display: flex; flex-direction: column; gap: 6px; }
+.sidebar-opt {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.85rem;
+  color: var(--c-mist);
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.sidebar-opt:hover, .sidebar-opt.active {
+  background: rgba(0,191,255,0.08);
+  color: var(--c-ice);
+}
+.sidebar-opt-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+}
+.sidebar-opt.active .sidebar-opt-dot { background: currentColor; }
+.catalog-main {
+  padding: 32px 40px;
+}
+.catalog-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.catalog-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--c-fog);
+}
+.sort-select {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-snow);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 8px 12px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+/* ═══════════════════════════════════════════════
+   VIEW: CART
+═══════════════════════════════════════════════ */
+#view-cart {
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+  padding: var(--nav-h) 80px 80px;
+}
+.cart-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  margin-top: 40px;
+}
+.cart-header {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.cart-count-label { color: var(--c-fog); font-size: 0.85rem; }
+.cart-items { display: flex; flex-direction: column; gap: 14px; }
+.cart-item {
+  display: flex; align-items: center; gap: 18px;
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  padding: 16px;
+}
+.cart-item-img {
+  width: 80px; height: 80px;
+  background: var(--c-ash);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name {
+  font-weight: 500; font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.cart-item-sku {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-fog);
+  letter-spacing: 0.1em;
+}
+.cart-item-qty {
+  display: flex; align-items: center; gap: 8px;
+}
+.qty-btn {
+  width: 28px; height: 28px;
+  background: var(--c-ash);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-snow);
+  border-radius: var(--r-sm);
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.qty-btn:hover { background: var(--c-ice); color: var(--c-black); border-color: var(--c-ice); }
+.qty-num {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-width: 20px; text-align: center;
+}
+.cart-item-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--c-white);
+  min-width: 100px; text-align: right;
+}
+.btn-remove {
+  background: transparent;
+  color: var(--c-smoke);
+  font-size: 1rem;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-sm);
+  transition: all var(--transition);
+}
+.btn-remove:hover { background: rgba(255,77,79,0.12); color: var(--c-error); }
+/* ORDER SUMMARY */
+.order-summary {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  position: sticky; top: calc(var(--nav-h) + 20px);
+  height: fit-content;
+}
+.summary-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+.summary-line {
+  display: flex; justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.88rem;
+}
+.summary-line:last-of-type { border-bottom: none; }
+.summary-line-label { color: var(--c-fog); }
+.summary-line-val { font-family: var(--font-mono); font-weight: 700; }
+.summary-total {
+  display: flex; justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 8px;
+}
+.total-label { font-size: 0.88rem; color: var(--c-fog); }
+.total-val {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--c-ice);
+}
+.coupon-row {
+  display: flex; gap: 8px;
+  margin-bottom: 16px;
+}
+.coupon-input {
+  flex: 1;
+  background: var(--c-ash);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-snow);
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  transition: border-color var(--transition);
+}
+.coupon-input:focus { border-color: var(--c-ice); }
+.btn-coupon {
+  background: var(--c-ash);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-mist);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 10px 16px;
+  border-radius: var(--r-md);
+  transition: all var(--transition);
+}
+.btn-coupon:hover { border-color: var(--c-ice); color: var(--c-ice); }
+
+/* ═══════════════════════════════════════════════
+   VIEW: CHECKOUT
+═══════════════════════════════════════════════ */
+#view-checkout {
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+  padding: var(--nav-h) 80px 80px;
+}
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 40px;
+  margin-top: 40px;
+}
+.checkout-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 32px;
+}
+.checkout-steps {
+  display: flex; gap: 0;
+  margin-bottom: 36px;
+}
+.step {
+  flex: 1;
+  display: flex; align-items: center; gap: 10px;
+  position: relative;
+}
+.step:not(:last-child)::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 10px;
+}
+.step.active:not(:last-child)::after { background: var(--c-ice); }
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--c-ash);
+  border: 2px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.step.active .step-num { background: var(--c-ice); border-color: var(--c-ice); color: var(--c-black); }
+.step.done .step-num { background: var(--c-success); border-color: var(--c-success); color: var(--c-black); }
+.step-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+}
+.step.active .step-label { color: var(--c-ice); }
+.step.done .step-label { color: var(--c-success); }
+/* FORM */
+.form-section { margin-bottom: 32px; }
+.form-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.form-row.single { grid-template-columns: 1fr; }
+.form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+}
+.field-input {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-snow);
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  font-size: 0.88rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.field-input:focus {
+  border-color: var(--c-ice);
+  box-shadow: 0 0 0 3px var(--c-ice-halo);
+}
+.field-input::placeholder { color: var(--c-smoke); }
+/* PAYMENT METHODS */
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.pay-method {
+  background: var(--c-carbon);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  transition: all var(--transition);
+}
+.pay-method:hover { border-color: rgba(0,191,255,0.3); }
+.pay-method.selected {
+  border-color: var(--c-ice);
+  background: var(--c-ice-halo);
+}
+.pay-method-icon { font-size: 1.6rem; }
+.pay-method-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--c-white);
+}
+.pay-method-sub { font-size: 0.68rem; color: var(--c-fog); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════
+   VIEW: AUTH
+═══════════════════════════════════════════════ */
+#view-auth {
+  min-height: 100vh;
+  display: flex;
+  background: var(--c-black);
+}
+.auth-visual {
+  flex: 1;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 50%, rgba(0,191,255,0.1) 0%, transparent 60%),
+    linear-gradient(135deg, #050d18 0%, #0a0a0a 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 60px;
+}
+.auth-visual-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,191,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,191,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.auth-logo {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  letter-spacing: 0.08em;
+  color: var(--c-white);
+  position: relative; z-index: 1;
+  text-shadow: 0 0 60px rgba(0,191,255,0.3);
+}
+.auth-logo span { color: var(--c-ice); }
+.auth-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-top: 12px;
+  position: relative; z-index: 1;
+}
+.auth-form-wrap {
+  width: 480px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 48px;
+  background: var(--c-void);
+  border-left: 1px solid rgba(255,255,255,0.05);
+}
+.auth-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  width: 100%;
+}
+.auth-sub { color: var(--c-fog); font-size: 0.85rem; margin-bottom: 32px; width: 100%; }
+.auth-form { width: 100%; }
+.auth-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.auth-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+}
+.auth-input {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-snow);
+  padding: 13px 16px;
+  border-radius: var(--r-md);
+  font-size: 0.9rem;
+  transition: all var(--transition);
+  width: 100%;
+}
+.auth-input:focus {
+  border-color: var(--c-ice);
+  box-shadow: 0 0 0 3px var(--c-ice-halo);
+}
+.auth-input::placeholder { color: var(--c-smoke); }
+.auth-options {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+  font-size: 0.82rem;
+}
+.auth-check { display: flex; align-items: center; gap: 8px; color: var(--c-fog); }
+.auth-forgot { color: var(--c-ice); font-family: var(--font-mono); font-size: 0.72rem; }
+.auth-forgot:hover { text-decoration: underline; }
+.btn-auth {
+  width: 100%;
+  padding: 14px;
+  background: var(--c-ice);
+  color: var(--c-black);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: var(--r-md);
+  border: none;
+  transition: all var(--transition);
+  margin-bottom: 20px;
+}
+.btn-auth:hover { box-shadow: var(--shadow-ice); transform: translateY(-1px); }
+.auth-divider {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--c-smoke);
+  text-transform: uppercase;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: rgba(255,255,255,0.07);
+}
+.oauth-btns { display: flex; gap: 10px; }
+.btn-oauth {
+  flex: 1;
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-mist);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 11px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all var(--transition);
+}
+.btn-oauth:hover { border-color: rgba(255,255,255,0.3); color: var(--c-white); }
+.auth-switch {
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: var(--c-fog);
+  text-align: center;
+}
+.auth-switch-link { color: var(--c-ice); cursor: pointer; }
+.auth-switch-link:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════
+   VIEW: ADMIN
+═══════════════════════════════════════════════ */
+#view-admin {
+  display: none;
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+}
+#view-admin.active { display: flex; }
+.admin-sidebar {
+  width: 220px;
+  background: var(--c-void);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  padding: 28px 16px;
+  display: flex; flex-direction: column; gap: 6px;
+  position: fixed;
+  top: var(--nav-h); bottom: 0; left: 0;
+  overflow-y: auto;
+}
+.admin-nav-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-smoke);
+  padding: 16px 12px 8px;
+  margin-top: 8px;
+}
+.admin-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  font-size: 0.85rem;
+  color: var(--c-fog);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.admin-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--c-white); }
+.admin-nav-item.active { background: var(--c-ice-glow); color: var(--c-ice); }
+.admin-nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+.admin-main {
+  flex: 1;
+  margin-left: 220px;
+  padding: 36px 40px;
+  overflow-y: auto;
+}
+.admin-page-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.admin-page-sub { color: var(--c-fog); font-size: 0.85rem; margin-bottom: 32px; }
+/* KPI CARDS */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.kpi-card {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  padding: 20px 22px;
+  position: relative; overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.kpi-card.k1::before { background: var(--c-ice); }
+.kpi-card.k2::before { background: var(--c-success); }
+.kpi-card.k3::before { background: var(--c-warn); }
+.kpi-card.k4::before { background: var(--c-error); }
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-bottom: 10px;
+}
+.kpi-val {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 0.03em;
+  color: var(--c-white);
+  line-height: 1;
+}
+.kpi-change {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  margin-top: 6px;
+}
+.kpi-change.up { color: var(--c-success); }
+.kpi-change.down { color: var(--c-error); }
+.kpi-icon {
+  position: absolute; right: 18px; top: 18px;
+  font-size: 1.8rem; opacity: 0.15;
+}
+/* ADMIN TABLE */
+.table-card {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.table-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.table-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-mist);
+}
+.btn-table-action {
+  background: var(--c-ice);
+  color: var(--c-black);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: var(--r-md);
+  border: none;
+  transition: all var(--transition);
+}
+.btn-table-action:hover { box-shadow: 0 0 16px rgba(0,191,255,0.35); }
+table { width: 100%; border-collapse: collapse; }
+th {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  text-align: left;
+  padding: 12px 22px;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+td {
+  padding: 14px 22px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+.td-product { display: flex; align-items: center; gap: 12px; }
+.td-thumb {
+  width: 40px; height: 40px;
+  background: var(--c-ash);
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.td-name { font-weight: 500; }
+.td-sku { font-family: var(--font-mono); font-size: 0.65rem; color: var(--c-fog); }
+.status-badge {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.status-active { background: rgba(82,196,26,0.12); color: var(--c-success); }
+.status-pending { background: rgba(250,173,20,0.12); color: var(--c-warn); }
+.status-out { background: rgba(255,77,79,0.12); color: var(--c-error); }
+.status-paid { background: rgba(0,191,255,0.12); color: var(--c-ice); }
+.td-actions { display: flex; gap: 6px; }
+.btn-icon-sm {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  color: var(--c-fog);
+  width: 30px; height: 30px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem;
+  transition: all var(--transition);
+}
+.btn-icon-sm:hover { background: rgba(0,191,255,0.12); color: var(--c-ice); }
+/* CHART STUB */
+.chart-row { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+.chart-card {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  padding: 22px;
+}
+.chart-card-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-bottom: 20px;
+}
+.chart-bars {
+  display: flex; align-items: flex-end;
+  gap: 10px; height: 140px;
+}
+.chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+.chart-bar {
+  width: 100%;
+  background: linear-gradient(180deg, var(--c-ice) 0%, rgba(0,127,181,0.4) 100%);
+  border-radius: 4px 4px 0 0;
+  transition: opacity var(--transition);
+}
+.chart-bar:hover { opacity: 0.8; }
+.chart-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--c-smoke);
+  letter-spacing: 0.06em;
+}
+.donut-wrap {
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 16px;
+  padding: 10px 0;
+}
+.donut-svg { width: 120px; height: 120px; }
+.donut-legend { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.donut-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; }
+.donut-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-pct { margin-left: auto; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; }
+
+/* ═══════════════════════════════════════════════
+   TOAST NOTIFICATION
+═══════════════════════════════════════════════ */
+.toast-wrap {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 9999; display: flex; flex-direction: column; gap: 10px;
+}
+.toast {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-lg);
+  padding: 14px 18px;
+  min-width: 280px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: slideIn 0.3s ease;
+  font-size: 0.88rem;
+}
+.toast.success { border-left: 3px solid var(--c-success); }
+.toast.error { border-left: 3px solid var(--c-error); }
+.toast.info { border-left: 3px solid var(--c-ice); }
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════
+   PRODUCT MODAL
+═══════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  display: none;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-xl);
+  width: 90%; max-width: 820px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 40px;
+  position: relative;
+  animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes modalIn {
+  from { transform: scale(0.92) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  color: var(--c-fog);
+  width: 36px; height: 36px;
+  border-radius: var(--r-md);
+  font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.modal-close:hover { background: rgba(255,77,79,0.15); color: var(--c-error); }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.modal-img {
+  aspect-ratio: 1;
+  background: var(--c-ash);
+  border-radius: var(--r-lg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7rem;
+}
+.modal-cat {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-ice);
+  margin-bottom: 10px;
+}
+.modal-name {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  color: var(--c-white);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.modal-price {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--c-ice);
+  margin-bottom: 20px;
+}
+.modal-desc { font-size: 0.88rem; color: var(--c-fog); line-height: 1.7; margin-bottom: 24px; }
+.size-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+  margin-bottom: 10px;
+}
+.sizes { display: flex; gap: 8px; margin-bottom: 24px; }
+.size-btn {
+  width: 40px; height: 40px;
+  background: var(--c-ash);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--c-mist);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border-radius: var(--r-md);
+  transition: all var(--transition);
+}
+.size-btn:hover, .size-btn.active {
+  border-color: var(--c-ice);
+  color: var(--c-ice);
+  background: var(--c-ice-halo);
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+.footer {
+  background: var(--c-void);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 60px 80px 30px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  letter-spacing: 0.08em;
+  color: var(--c-white);
+  margin-bottom: 12px;
+}
+.footer-logo span { color: var(--c-ice); }
+.footer-about { font-size: 0.85rem; color: var(--c-fog); line-height: 1.7; max-width: 260px; }
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-white);
+  margin-bottom: 16px;
+}
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-link { font-size: 0.85rem; color: var(--c-fog); transition: color var(--transition); }
+.footer-link:hover { color: var(--c-ice); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--c-smoke);
+  letter-spacing: 0.05em;
+}
+.footer-socials { display: flex; gap: 10px; }
+.social-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  color: var(--c-fog);
+  transition: all var(--transition);
+}
+.social-btn:hover { background: var(--c-ice-glow); border-color: var(--c-ice); color: var(--c-ice); }
+
+.spec-grid,
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.spec-card,
+.roadmap-card,
+.account-card,
+.log-list,
+.metric-list {
+  background: var(--c-carbon);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  padding: 22px;
+}
+.spec-label,
+.roadmap-label,
+.account-label,
+.log-label,
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-ice);
+  margin-bottom: 12px;
+}
+.spec-title,
+.roadmap-title,
+.account-title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+.spec-copy,
+.roadmap-copy,
+.account-copy,
+.metric-copy {
+  color: var(--c-fog);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+.roadmap-points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.roadmap-point,
+.account-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--c-mist);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(0,191,255,0.12);
+  color: var(--c-ice);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.auth-stack {
+  width: 100%;
+}
+.auth-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.auth-helper {
+  font-size: 0.78rem;
+  color: var(--c-fog);
+  margin-top: 14px;
+}
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+}
+.history-item,
+.log-item,
+.metric-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.history-item:last-child,
+.log-item:last-child,
+.metric-item:last-child {
+  border-bottom: none;
+}
+.history-main,
+.log-main,
+.metric-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.history-title,
+.log-title,
+.metric-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--c-white);
+}
+.history-sub,
+.log-sub,
+.metric-sub {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--c-fog);
+  letter-spacing: 0.08em;
+}
+.history-total {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--c-ice);
+}
+.payment-dynamic {
+  margin-top: 18px;
+  padding: 18px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+}
+.payment-note {
+  color: var(--c-fog);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+.admin-inline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.hidden {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MISC UTILS
+═══════════════════════════════════════════════ */
+.loading-spinner {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(0,191,255,0.3);
+  border-top-color: var(--c-ice);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state {
+  text-align: center; padding: 60px;
+  font-family: var(--font-mono);
+}
+.empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.3; }
+.empty-title { font-size: 1rem; color: var(--c-fog); margin-bottom: 8px; }
+.empty-sub { font-size: 0.78rem; color: var(--c-smoke); }
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--c-ash) 25%, var(--c-carbon) 50%, var(--c-ash) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--r-sm);
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Animations for page entry */
+@keyframes fadeUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.fade-up { animation: fadeUp 0.5s ease forwards; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-brand">ZERO<span>GRAU</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="navigate('home')">Início</button>
+    <button class="nav-link" onclick="navigate('catalog')">Produtos</button>
+    <button class="nav-link" onclick="navigate('home')">Sobre</button>
+    <button class="nav-link" onclick="navigate('home')">Contato</button>
+    <button class="nav-link" onclick="navigate('admin')">⚙ Admin</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search-wrap">
+      <span>🔍</span>
+      <input class="nav-search" id="navSearchInput" type="text" placeholder="Buscar produtos..." oninput="handleSearchInput(this.value)">
+    </div>
+    <button class="nav-icon-btn" onclick="navigate('cart')" title="Carrinho">
+      🛒
+      <span class="nav-badge" id="cartBadge">0</span>
+    </button>
+    <button class="nav-icon-btn" title="Favoritos">🤍</button>
+    <button class="btn-login" onclick="navigate('auth')">Entrar</button>
+  </div>
+</nav>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-grid" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: HOME
+═══════════════════════════════════════════ -->
+<div id="view-home" class="view active">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow fade-up">Nova Coleção 2025</div>
+      <h1 class="hero-title fade-up delay-1">SINTA<em>O FRIO</em></h1>
+      <p class="hero-sub fade-up delay-2">Streetwear premium que transmite a sensação de gelo. Peças com identidade, atitude e acabamento único.</p>
+      <div class="hero-actions fade-up delay-3">
+        <button class="btn-primary" onclick="navigate('catalog')">
+          ❄ Explorar Coleção
+        </button>
+        <button class="btn-ghost" onclick="navigate('catalog')">
+          Ver Lookbook →
+        </button>
+      </div>
+      <div class="hero-stats fade-up delay-4">
+        <div class="stat">
+          <div class="stat-num">2.4K</div>
+          <div class="stat-label">Clientes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">48</div>
+          <div class="stat-label">Produtos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Avaliação</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-product-showcase">
+        <div class="showcase-card showcase-side2">
+          <div class="showcase-img">🧢</div>
+          <div class="showcase-info">
+            <div class="showcase-name">ZERO CAP</div>
+            <div class="showcase-price">R$149</div>
+          </div>
+        </div>
+        <div class="showcase-card showcase-main">
+          <div class="showcase-img" style="font-size:5rem">🧥</div>
+          <div class="showcase-info">
+            <div class="showcase-name">ICE HOODIE — EDIÇÃO LIMITADA</div>
+            <div class="showcase-price">R$389</div>
+          </div>
+        </div>
+        <div class="showcase-card showcase-side1">
+          <div class="showcase-img" style="font-size:2.5rem">👟</div>
+          <div class="showcase-info">
+            <div class="showcase-name">CRYO SNEAKER</div>
+            <div class="showcase-price">R$599</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES STRIP -->
+  <div class="features-strip">
+    <div class="feature-item">
+      <span class="feature-icon">🚚</span>
+      <div class="feature-text">
+        <div class="feature-label">Frete Grátis</div>
+        <div class="feature-desc">Acima de R$299</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-text">
+        <div class="feature-label">Pagamento Seguro</div>
+        <div class="feature-desc">TLS 1.3 + JWT</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🔄</span>
+      <div class="feature-text">
+        <div class="feature-label">Troca Fácil</div>
+        <div class="feature-desc">30 dias sem perguntas</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-text">
+        <div class="feature-label">API &lt; 300ms</div>
+        <div class="feature-desc">Spring Boot 3 + Redis</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESTAQUES -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// Destaques</div>
+        <div class="section-title">MAIS VENDIDOS</div>
+      </div>
+      <button class="section-link" onclick="navigate('catalog')">Ver tudo →</button>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterProducts(this, 'all')">Todos</button>
+      <button class="filter-btn" onclick="filterProducts(this, 'hoodies')">Hoodies</button>
+      <button class="filter-btn" onclick="filterProducts(this, 'tshirts')">Camisetas</button>
+      <button class="filter-btn" onclick="filterProducts(this, 'caps')">Bonés</button>
+      <button class="filter-btn" onclick="filterProducts(this, 'sneakers')">Tênis</button>
+    </div>
+    <div class="product-grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- BANNER -->
+  <div class="banner-strip">
+    <div class="banner-text">
+      <div class="banner-tag">// Oferta Limitada</div>
+      <div class="banner-title">20% OFF NA PRIMEIRA COMPRA</div>
+    </div>
+    <button class="btn-dark" onclick="showToast('Cupom ZEROGRAU20 copiado! 🎉', 'success')">
+      Pegar Cupom: ZEROGRAU20
+    </button>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// Arquitetura</div>
+        <div class="section-title">PLATAFORMA API-FIRST</div>
+      </div>
+      <div class="pill">Angular 20 + Spring Boot 3</div>
+    </div>
+    <div class="spec-grid">
+      <article class="spec-card">
+        <div class="spec-label">Frontend</div>
+        <div class="spec-title">Angular Commerce UI</div>
+        <p class="spec-copy">Catálogo, carrinho, checkout, autenticação e painel administrativo desenhados para SSR opcional, SEO e experiência mobile-first.</p>
+      </article>
+      <article class="spec-card">
+        <div class="spec-label">Gateway</div>
+        <div class="spec-title">API Gateway Seguro</div>
+        <p class="spec-copy">Roteamento central, rate limiting, CORS controlado, JWT e observabilidade unificada para Auth, Products, Orders e Payments.</p>
+      </article>
+      <article class="spec-card">
+        <div class="spec-label">Dados</div>
+        <div class="spec-title">PostgreSQL + Redis</div>
+        <p class="spec-copy">Persistência relacional para catálogo e pedidos, com cache para leituras quentes e metas de resposta abaixo de 300ms.</p>
+      </article>
+      <article class="spec-card">
+        <div class="spec-label">Ops</div>
+        <div class="spec-title">CI/CD Cloud-Ready</div>
+        <p class="spec-copy">Docker, Kubernetes, GitHub Actions, Prometheus, Grafana e ELK para deploy contínuo, métricas e logs centralizados.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// Roadmap</div>
+        <div class="section-title">ENTREGA POR ETAPAS</div>
+      </div>
+    </div>
+    <div class="roadmap-grid">
+      <article class="roadmap-card">
+        <div class="roadmap-label">MVP</div>
+        <div class="roadmap-title">Venda Core</div>
+        <p class="roadmap-copy">Catálogo, carrinho persistente, login, checkout seguro e criação de pedidos com histórico de conta.</p>
+        <div class="roadmap-points">
+          <div class="roadmap-point"><span>Checkout PIX, Cartão e Boleto</span><span class="pill">RF-06</span></div>
+          <div class="roadmap-point"><span>Gestão básica de estoque</span><span class="pill">RF-08</span></div>
+        </div>
+      </article>
+      <article class="roadmap-card">
+        <div class="roadmap-label">V2</div>
+        <div class="roadmap-title">Operação</div>
+        <p class="roadmap-copy">Admin completo com KPIs, cupons, auditoria, métricas, painéis de pedidos e observabilidade do ecossistema.</p>
+        <div class="roadmap-points">
+          <div class="roadmap-point"><span>Dashboard e painel admin</span><span class="pill">Admin</span></div>
+          <div class="roadmap-point"><span>Logs, métricas e tracing</span><span class="pill">RNF-10</span></div>
+        </div>
+      </article>
+      <article class="roadmap-card">
+        <div class="roadmap-label">V3</div>
+        <div class="roadmap-title">Escala</div>
+        <p class="roadmap-copy">Marketplace, recomendação com IA, mobile app e evolução para microsserviços com mensageria e busca avançada.</p>
+        <div class="roadmap-points">
+          <div class="roadmap-point"><span>Kafka / RabbitMQ / Elasticsearch</span><span class="pill">Future</span></div>
+          <div class="roadmap-point"><span>App Flutter e marketplace</span><span class="pill">V3</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">ZERO<span>GRAU</span></div>
+        <p class="footer-about">Streetwear premium com identidade visual única. Cada peça conta uma história de frio, atitude e inovação.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Produtos</div>
+        <div class="footer-links">
+          <a class="footer-link">Hoodies</a>
+          <a class="footer-link">Camisetas</a>
+          <a class="footer-link">Bonés</a>
+          <a class="footer-link">Tênis</a>
+          <a class="footer-link">Acessórios</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Empresa</div>
+        <div class="footer-links">
+          <a class="footer-link">Sobre</a>
+          <a class="footer-link">Carreiras</a>
+          <a class="footer-link">Blog</a>
+          <a class="footer-link">Imprensa</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Suporte</div>
+        <div class="footer-links">
+          <a class="footer-link">FAQ</a>
+          <a class="footer-link">Rastreio</a>
+          <a class="footer-link">Trocas</a>
+          <a class="footer-link">LGPD / Privacidade</a>
+          <a class="footer-link">contato@zerograu.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 ZeroGrau Commerce Platform — Angular + Spring Boot 3 + PostgreSQL</div>
+      <div class="footer-socials">
+        <button class="social-btn">📸</button>
+        <button class="social-btn">🐦</button>
+        <button class="social-btn">▶</button>
+        <button class="social-btn">💼</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: CATALOG
+═══════════════════════════════════════════ -->
+<div id="view-catalog" class="view">
+  <div class="catalog-hero">
+    <div class="catalog-title">CATÁLOGO</div>
+    <div class="catalog-sub">48 produtos · Coleção 2025</div>
+  </div>
+  <div class="catalog-layout">
+    <aside class="catalog-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Categorias</div>
+        <div class="sidebar-options">
+          <div class="sidebar-opt active" data-filter-group="category" data-value="all" onclick="setCatalogCategory('all', this)">
+            <span class="sidebar-opt-dot"></span> Todos os Produtos
+          </div>
+          <div class="sidebar-opt" data-filter-group="category" data-value="hoodies" onclick="setCatalogCategory('hoodies', this)">
+            <span class="sidebar-opt-dot"></span> Hoodies
+          </div>
+          <div class="sidebar-opt" data-filter-group="category" data-value="tshirts" onclick="setCatalogCategory('tshirts', this)">
+            <span class="sidebar-opt-dot"></span> Camisetas
+          </div>
+          <div class="sidebar-opt" data-filter-group="category" data-value="caps" onclick="setCatalogCategory('caps', this)">
+            <span class="sidebar-opt-dot"></span> Bonés
+          </div>
+          <div class="sidebar-opt" data-filter-group="category" data-value="sneakers" onclick="setCatalogCategory('sneakers', this)">
+            <span class="sidebar-opt-dot"></span> Tênis
+          </div>
+          <div class="sidebar-opt" data-filter-group="category" data-value="accessories" onclick="setCatalogCategory('accessories', this)">
+            <span class="sidebar-opt-dot"></span> Acessórios
+          </div>
+          <div class="sidebar-opt" data-filter-group="category" data-value="pants" onclick="setCatalogCategory('pants', this)">
+            <span class="sidebar-opt-dot"></span> Acessórios
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Preço</div>
+        <div class="sidebar-options">
+          <div class="sidebar-opt active" data-filter-group="price" data-value="all" onclick="setCatalogPrice('all', this)">
+            <span class="sidebar-opt-dot"></span> Todos os Preços
+          </div>
+          <div class="sidebar-opt" data-filter-group="price" data-value="up-to-200" onclick="setCatalogPrice('up-to-200', this)">
+            <span class="sidebar-opt-dot"></span> Até R$200
+          </div>
+          <div class="sidebar-opt" data-filter-group="price" data-value="200-400" onclick="setCatalogPrice('200-400', this)">
+            <span class="sidebar-opt-dot"></span> R$200 – R$400
+          </div>
+          <div class="sidebar-opt" data-filter-group="price" data-value="400-800" onclick="setCatalogPrice('400-800', this)">
+            <span class="sidebar-opt-dot"></span> R$400 – R$800
+          </div>
+          <div class="sidebar-opt" data-filter-group="price" data-value="800-plus" onclick="setCatalogPrice('800-plus', this)">
+            <span class="sidebar-opt-dot"></span> Acima de R$800
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Disponibilidade</div>
+        <div class="sidebar-options">
+          <div class="sidebar-opt active" data-filter-group="availability" data-value="all" onclick="setCatalogAvailability('all', this)">
+            <span class="sidebar-opt-dot"></span> Todos
+          </div>
+          <div class="sidebar-opt" data-filter-group="availability" data-value="in-stock" onclick="setCatalogAvailability('in-stock', this)">
+            <span class="sidebar-opt-dot"></span> Em Estoque
+          </div>
+          <div class="sidebar-opt" data-filter-group="availability" data-value="low-stock" onclick="setCatalogAvailability('low-stock', this)">
+            <span class="sidebar-opt-dot"></span> Estoque Baixo
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Ordenar</div>
+        <div class="sidebar-options">
+          <div class="sidebar-opt active" data-filter-group="sort" data-value="relevance" onclick="setCatalogSort('relevance', this)">
+            <span class="sidebar-opt-dot"></span> Relevância
+          </div>
+          <div class="sidebar-opt" data-filter-group="sort" data-value="price-asc" onclick="setCatalogSort('price-asc', this)">
+            <span class="sidebar-opt-dot"></span> Menor Preço
+          </div>
+          <div class="sidebar-opt" data-filter-group="sort" data-value="price-desc" onclick="setCatalogSort('price-desc', this)">
+            <span class="sidebar-opt-dot"></span> Maior Preço
+          </div>
+          <div class="sidebar-opt" data-filter-group="sort" data-value="newest" onclick="setCatalogSort('newest', this)">
+            <span class="sidebar-opt-dot"></span> Mais Novos
+          </div>
+        </div>
+      </div>
+    </aside>
+    <main class="catalog-main">
+      <div class="catalog-toolbar">
+        <span class="catalog-count" id="catalogCount">48 produtos encontrados</span>
+        <select class="sort-select" id="catalogSortSelect" onchange="setCatalogSort(this.value)">
+          <option value="relevance">Relevância</option>
+          <option value="price-asc">Menor Preço</option>
+          <option value="price-desc">Maior Preço</option>
+          <option value="newest">Mais Recentes</option>
+        </select>
+      </div>
+      <div class="product-grid" id="catalogGrid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: CART
+═══════════════════════════════════════════ -->
+<div id="view-cart" class="view">
+  <div class="cart-header">CARRINHO</div>
+  <div class="cart-count-label" id="cartCountLabel">0 itens</div>
+  <div class="cart-grid">
+    <div>
+      <div class="cart-items" id="cartItems">
+        <div class="empty-state">
+          <div class="empty-icon">🛒</div>
+          <div class="empty-title">Carrinho vazio</div>
+          <div class="empty-sub">Adicione produtos para continuar</div>
+        </div>
+      </div>
+    </div>
+    <div class="order-summary">
+      <div class="summary-title">RESUMO</div>
+      <div class="coupon-row">
+        <input class="coupon-input" placeholder="Código de cupom..." id="couponInput">
+        <button class="btn-coupon" onclick="applyCoupon()">Aplicar</button>
+      </div>
+      <div class="summary-line">
+        <span class="summary-line-label">Subtotal</span>
+        <span class="summary-line-val" id="subtotalVal">R$ 0,00</span>
+      </div>
+      <div class="summary-line">
+        <span class="summary-line-label">Frete</span>
+        <span class="summary-line-val" id="freteVal">Grátis</span>
+      </div>
+      <div class="summary-line">
+        <span class="summary-line-label">Desconto</span>
+        <span class="summary-line-val" style="color:var(--c-success)" id="discountVal">— R$ 0,00</span>
+      </div>
+      <div class="summary-total">
+        <span class="total-label">Total</span>
+        <span class="total-val" id="totalVal">R$ 0,00</span>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center" onclick="navigate('checkout')">
+        ❄ Finalizar Compra
+      </button>
+      <button class="btn-ghost" style="width:100%;justify-content:center;margin-top:10px" onclick="navigate('catalog')">
+        ← Continuar Comprando
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: CHECKOUT
+═══════════════════════════════════════════ -->
+<div id="view-checkout" class="view">
+  <div class="checkout-title">CHECKOUT</div>
+  <div class="checkout-steps">
+    <div class="step done">
+      <div class="step-num">✓</div>
+      <span class="step-label">Carrinho</span>
+    </div>
+    <div class="step active">
+      <div class="step-num">2</div>
+      <span class="step-label">Dados</span>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <span class="step-label">Pagamento</span>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <span class="step-label">Confirmação</span>
+    </div>
+  </div>
+  <div class="checkout-grid">
+    <div>
+      <!-- DADOS PESSOAIS -->
+      <div class="form-section">
+        <div class="form-section-title">// Dados Pessoais</div>
+        <div class="form-row">
+          <div class="field">
+            <label class="field-label">Nome Completo</label>
+            <input class="field-input" id="checkoutName" placeholder="João da Silva">
+          </div>
+          <div class="field">
+            <label class="field-label">E-mail</label>
+            <input class="field-input" id="checkoutEmail" type="email" placeholder="joao@email.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label class="field-label">CPF</label>
+            <input class="field-input" id="checkoutCpf" placeholder="000.000.000-00">
+          </div>
+          <div class="field">
+            <label class="field-label">Telefone</label>
+            <input class="field-input" id="checkoutPhone" placeholder="(11) 99999-9999">
+          </div>
+        </div>
+      </div>
+      <!-- ENDEREÇO -->
+      <div class="form-section">
+        <div class="form-section-title">// Endereço de Entrega</div>
+        <div class="form-row triple">
+          <div class="field" style="grid-column:1/3">
+            <label class="field-label">Endereço</label>
+            <input class="field-input" id="checkoutAddress" placeholder="Rua, número">
+          </div>
+          <div class="field">
+            <label class="field-label">CEP</label>
+            <input class="field-input" id="checkoutZip" placeholder="00000-000">
+          </div>
+        </div>
+        <div class="form-row triple">
+          <div class="field" style="grid-column:1/3">
+            <label class="field-label">Cidade</label>
+            <input class="field-input" id="checkoutCity" placeholder="São Paulo">
+          </div>
+          <div class="field">
+            <label class="field-label">Estado</label>
+            <input class="field-input" id="checkoutState" placeholder="SP">
+          </div>
+        </div>
+      </div>
+      <!-- PAGAMENTO -->
+      <div class="form-section">
+        <div class="form-section-title">// Método de Pagamento</div>
+        <div class="payment-methods">
+          <div class="pay-method selected" data-method="card" onclick="selectPayment(this)">
+            <span class="pay-method-icon">💳</span>
+            <div>
+              <div class="pay-method-label">Cartão de Crédito</div>
+              <div class="pay-method-sub">Até 12x sem juros</div>
+            </div>
+          </div>
+          <div class="pay-method" data-method="pix" onclick="selectPayment(this)">
+            <span class="pay-method-icon">⚡</span>
+            <div>
+              <div class="pay-method-label">PIX</div>
+              <div class="pay-method-sub">Aprovação imediata</div>
+            </div>
+          </div>
+          <div class="pay-method" data-method="boleto" onclick="selectPayment(this)">
+            <span class="pay-method-icon">📄</span>
+            <div>
+              <div class="pay-method-label">Boleto</div>
+              <div class="pay-method-sub">Venc. em 3 dias úteis</div>
+            </div>
+          </div>
+          <div class="pay-method" data-method="debit" onclick="selectPayment(this)">
+            <span class="pay-method-icon">💰</span>
+            <div>
+              <div class="pay-method-label">Débito</div>
+              <div class="pay-method-sub">Desconto 5%</div>
+            </div>
+          </div>
+        </div>
+        <div id="paymentDynamicPanel" class="payment-dynamic"></div>
+        <button class="btn-primary" id="checkoutConfirmBtn" style="width:100%;justify-content:center;margin-top:20px" onclick="confirmOrder()">
+          🔒 Confirmar Pedido
+        </button>
+      </div>
+    </div>
+    <!-- SIDE SUMMARY -->
+    <div class="order-summary" style="position:static">
+      <div class="summary-title">SEU PEDIDO</div>
+      <div id="checkoutItems"></div>
+      <div class="summary-line" style="margin-top:16px">
+        <span class="summary-line-label">Subtotal</span>
+        <span class="summary-line-val" id="coSubtotal">R$ 0,00</span>
+      </div>
+      <div class="summary-line">
+        <span class="summary-line-label">Frete</span>
+        <span class="summary-line-val" id="coShipping">Grátis</span>
+      </div>
+      <div class="summary-line">
+        <span class="summary-line-label">Desconto</span>
+        <span class="summary-line-val" id="coDiscount">— R$ 0,00</span>
+      </div>
+      <div class="summary-total">
+        <span class="total-label">Total</span>
+        <span class="total-val" id="coTotal">R$ 0,00</span>
+      </div>
+      <div style="margin-top:16px;padding:14px;background:var(--c-ice-halo);border:1px solid rgba(0,191,255,0.15);border-radius:var(--r-md)">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;color:var(--c-ice);margin-bottom:6px">🔒 PAGAMENTO SEGURO</div>
+        <div style="font-size:0.78rem;color:var(--c-fog)">TLS 1.3 · PCI DSS · OWASP compliant · JWT Auth</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: AUTH
+═══════════════════════════════════════════ -->
+<div id="view-auth" class="view">
+  <div class="auth-visual">
+    <div class="auth-visual-bg"></div>
+    <div class="auth-logo">ZERO<span>GRAU</span></div>
+    <div class="auth-tagline">// streetwear que transmite o frio</div>
+  </div>
+  <div class="auth-form-wrap">
+    <div id="authPanel" class="auth-stack"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: ADMIN
+═══════════════════════════════════════════ -->
+<div id="view-admin" class="view">
+  <aside class="admin-sidebar">
+    <div style="font-family:var(--font-display);font-size:1.3rem;letter-spacing:0.08em;padding:0 12px 20px;color:var(--c-white)">
+      ZERO<span style="color:var(--c-ice)">GRAU</span>
+    </div>
+    <div class="admin-nav-label">Principal</div>
+    <div class="admin-nav-item active" onclick="adminNav(this,'dashboard')"><span class="icon">📊</span> Dashboard</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'products')"><span class="icon">📦</span> Produtos</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'orders')"><span class="icon">🛒</span> Pedidos</div>
+    <div class="admin-nav-label">Gestão</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'users')"><span class="icon">👥</span> Usuários</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'coupons')"><span class="icon">🎟</span> Cupons</div>
+    <div class="admin-nav-label">Sistema</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'config')"><span class="icon">⚙</span> Config.</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'logs')"><span class="icon">🔍</span> Logs</div>
+    <div class="admin-nav-item" onclick="adminNav(this,'metrics')"><span class="icon">📡</span> Métricas</div>
+    <div style="margin-top:auto;padding-top:20px">
+      <button class="btn-ghost" style="width:100%;justify-content:center;font-size:0.72rem" onclick="navigate('home')">← Voltar à Loja</button>
+    </div>
+  </aside>
+  <main class="admin-main" id="adminMain">
+    <!-- DASHBOARD content rendered by JS -->
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA STORE
+═══════════════════════════════════════════ */
+const PRODUCTS = [
+  { id:1, name:'ICE Hoodie Classic', cat:'hoodies', category:'Hoodies', price:389, emoji:'🧥', badge:'new', stock:42, rating:4.9, featured:true, createdAt:'2026-05-18', desc:'Hoodie premium com fleece interno glacial, estampa embossed e capuz duplo. Edição limitada.' },
+  { id:2, name:'Frost Tee Oversize', cat:'tshirts', category:'Camisetas', price:159, emoji:'👕', badge:'hit', stock:18, rating:4.7, featured:true, createdAt:'2026-05-11', desc:'Camiseta oversize 100% algodão 380g. Drop shoulder, gola reforçada.' },
+  { id:3, name:'Zero Cap Snapback', cat:'caps', category:'Bonés', price:149, emoji:'🧢', badge:'new', stock:7, rating:4.6, featured:false, createdAt:'2026-05-19', desc:'Snapback 6 painéis com logo 3D bordado e aba reta.' },
+  { id:4, name:'Cryo Sneaker HI', cat:'sneakers', category:'Tênis', price:599, old:749, emoji:'👟', badge:'sale', stock:3, rating:4.8, featured:true, createdAt:'2026-05-02', desc:'Tênis high-top com solado vulcanizado, couro sintético e ilhós metálicos.' },
+  { id:5, name:'Arctic Jogger', cat:'pants', category:'Calças', price:279, emoji:'👖', badge:null, stock:25, rating:4.5, featured:false, createdAt:'2026-04-29', desc:'Calça jogger com elástico duplo, bolsos zíper e bordado lateral.' },
+  { id:6, name:'Blizzard Crewneck', cat:'hoodies', category:'Hoodies', price:329, emoji:'🥷', badge:'hit', stock:11, rating:4.8, featured:true, createdAt:'2026-05-07', desc:'Moletom careca com interior felpudo, estampa frontal e ribana reforçada.' },
+  { id:7, name:'Sub-Zero Tee', cat:'tshirts', category:'Camisetas', price:139, emoji:'🎽', badge:null, stock:33, rating:4.4, featured:false, createdAt:'2026-04-18', desc:'Tee básica com corte slim, gola redonda reforçada. 5 cores disponíveis.' },
+  { id:8, name:'Glacier Beanie', cat:'accessories', category:'Acessórios', price:89, emoji:'🎿', badge:'new', stock:19, rating:4.3, featured:false, createdAt:'2026-05-20', desc:'Touca com logo bordado, ribana dupla e fio de algodão premium.' },
+];
+
+const STORAGE_KEY = 'zerograu-store-v1';
+const COUPONS = {
+  ZEROGRAU20: { type: 'percent', value: 20, label: '20% OFF primeira compra' },
+  FRETEGRATIS: { type: 'shipping', value: 0, label: 'Frete grátis Brasil' },
+  VIP10: { type: 'percent', value: 10, label: '10% OFF clientes recorrentes' }
+};
+const DEFAULT_USERS = [
+  { id: 1, name: 'Admin ZeroGrau', email: 'admin@zerograu.com', password: 'admin123', role: 'ADMIN', createdAt: '2026-05-01' },
+  { id: 2, name: 'Ana Souza', email: 'ana@zerograu.com', password: 'cliente123', role: 'CUSTOMER', createdAt: '2026-05-03' },
+  { id: 3, name: 'Bruno Lima', email: 'bruno@zerograu.com', password: 'cliente123', role: 'CUSTOMER', createdAt: '2026-05-05' },
+  { id: 4, name: 'Carla Mota', email: 'carla@zerograu.com', password: 'cliente123', role: 'CUSTOMER', createdAt: '2026-05-06' },
+  { id: 5, name: 'Diego Ramos', email: 'diego@zerograu.com', password: 'cliente123', role: 'CUSTOMER', createdAt: '2026-05-10' },
+  { id: 6, name: 'Eva Santos', email: 'eva@zerograu.com', password: 'cliente123', role: 'CUSTOMER', createdAt: '2026-05-12' }
+];
+const DEMO_ORDERS = [
+  { id: 'ZG-1042', createdAt: '2026-05-19T10:15:00', status: 'PAID', payment: 'card', total: 389, subtotal: 389, shipping: 0, discount: 0, userId: 2, customer: { name: 'Ana Souza', email: 'ana@zerograu.com' }, items: [{ name: 'ICE Hoodie Classic', qty: 1, emoji: '🧥' }] },
+  { id: 'ZG-1041', createdAt: '2026-05-19T09:00:00', status: 'PAID', payment: 'pix', total: 599, subtotal: 599, shipping: 0, discount: 0, userId: 3, customer: { name: 'Bruno Lima', email: 'bruno@zerograu.com' }, items: [{ name: 'Cryo Sneaker HI', qty: 1, emoji: '👟' }] },
+  { id: 'ZG-1040', createdAt: '2026-05-18T14:20:00', status: 'PENDING', payment: 'boleto', total: 318, subtotal: 318, shipping: 0, discount: 0, userId: 4, customer: { name: 'Carla Mota', email: 'carla@zerograu.com' }, items: [{ name: 'Frost Tee Oversize', qty: 2, emoji: '👕' }] },
+  { id: 'ZG-1039', createdAt: '2026-05-18T12:50:00', status: 'PAID', payment: 'card', total: 149, subtotal: 149, shipping: 19.9, discount: 19.9, userId: 5, customer: { name: 'Diego Ramos', email: 'diego@zerograu.com' }, items: [{ name: 'Zero Cap Snapback', qty: 1, emoji: '🧢' }] },
+  { id: 'ZG-1038', createdAt: '2026-05-17T16:00:00', status: 'PAID', payment: 'pix', total: 279, subtotal: 279, shipping: 19.9, discount: 19.9, userId: 6, customer: { name: 'Eva Santos', email: 'eva@zerograu.com' }, items: [{ name: 'Arctic Jogger', qty: 1, emoji: '👖' }] }
+];
+const LOG_ENTRIES = [
+  { level: 'INFO', title: 'Auth Service', detail: 'JWT emitido para /api/auth/login em 182ms', timestamp: '20/05 09:41' },
+  { level: 'WARN', title: 'Order Service', detail: 'Rate limit acionado para IP 177.12.xxx.xxx', timestamp: '20/05 09:37' },
+  { level: 'INFO', title: 'Payment Gateway', detail: 'Webhook Mercado Pago conciliado com sucesso', timestamp: '20/05 09:30' },
+  { level: 'INFO', title: 'Observability', detail: 'Prometheus coletou métricas de 4 serviços', timestamp: '20/05 09:25' }
+];
+const METRICS = [
+  { title: 'Latency p95', value: '248ms', detail: 'Abaixo da meta RNF-02 (< 300ms)' },
+  { title: 'Uptime', value: '99.94%', detail: 'Acima da meta RNF-06' },
+  { title: 'Cache Hit', value: '83%', detail: 'Redis acelerando listagem de catálogo' },
+  { title: 'Error Rate', value: '0.08%', detail: 'Abaixo do limite operacional' }
+];
+const ENVIRONMENTS = [
+  { name: 'Local', status: 'Ativo', detail: 'HTML SPA + simulação de serviços locais' },
+  { name: 'Dev', status: 'Pipeline pronto', detail: 'Build Angular / Maven / testes automatizados' },
+  { name: 'Staging', status: 'Monitorado', detail: 'Homologação com Grafana, ELK e tracing' },
+  { name: 'Production', status: 'Cloud-ready', detail: 'Docker, Kubernetes, CDN, WAF e autoscaling' }
+];
+const DEFAULT_STATE = {
+  cart: [],
+  discount: 0,
+  couponCode: '',
+  favorites: [],
+  homeCategory: 'all',
+  sessionUserId: null,
+  users: DEFAULT_USERS,
+  orders: [],
+  checkout: {
+    paymentMethod: 'card',
+    customer: {
+      name: '',
+      email: '',
+      cpf: '',
+      phone: '',
+      address: '',
+      zip: '',
+      city: '',
+      state: ''
+    }
+  },
+  catalog: {
+    search: '',
+    category: 'all',
+    price: 'all',
+    availability: 'all',
+    sort: 'relevance'
+  },
+  authMode: 'login'
+};
+
+function cloneDefaultUsers() {
+  return DEFAULT_USERS.map(user => ({ ...user }));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { ...DEFAULT_STATE, users: cloneDefaultUsers() };
+    const parsed = JSON.parse(raw);
+    return {
+      ...DEFAULT_STATE,
+      ...parsed,
+      homeCategory: parsed.homeCategory || DEFAULT_STATE.homeCategory,
+      cart: Array.isArray(parsed.cart) ? parsed.cart : [],
+      favorites: Array.isArray(parsed.favorites) ? parsed.favorites : [],
+      users: Array.isArray(parsed.users) && parsed.users.length ? parsed.users : cloneDefaultUsers(),
+      orders: Array.isArray(parsed.orders) ? parsed.orders : [],
+      checkout: {
+        ...DEFAULT_STATE.checkout,
+        ...(parsed.checkout || {}),
+        customer: {
+          ...DEFAULT_STATE.checkout.customer,
+          ...((parsed.checkout || {}).customer || {})
+        }
+      },
+      catalog: {
+        ...DEFAULT_STATE.catalog,
+        ...(parsed.catalog || {})
+      },
+      authMode: parsed.authMode || 'login'
+    };
+  } catch (error) {
+    return { ...DEFAULT_STATE, users: cloneDefaultUsers() };
+  }
+}
+
+let state = loadState();
+
+function persistState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function syncState() {
+  persistState();
+}
+
+function getSessionUser() {
+  return state.users.find(user => user.id === state.sessionUserId) || null;
+}
+
+function setSessionUser(userId) {
+  state.sessionUserId = userId;
+  persistState();
+  updateNavSessionUI();
+}
+
+function formatCurrency(value) {
+  return `R$ ${Number(value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function formatDate(value) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(String(value))) {
+    const [year, month, day] = String(value).split('-');
+    return `${day}/${month}/${year}`;
+  }
+  return new Date(value).toLocaleDateString('pt-BR');
+}
+
+function normalizeText(value) {
+  return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+function getSubtotal() {
+  return state.cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+}
+
+function getShippingCost() {
+  const subtotal = getSubtotal();
+  if (!state.cart.length) return 0;
+  if (state.couponCode === 'FRETEGRATIS' || subtotal >= 299) return 0;
+  return 19.9;
+}
+
+function getDiscountAmount() {
+  return Number(state.discount || 0);
+}
+
+function getOrderTotal() {
+  return Math.max(0, getSubtotal() + getShippingCost() - getDiscountAmount());
+}
+
+function recalculateDiscount() {
+  const coupon = COUPONS[state.couponCode];
+  state.discount = coupon && coupon.type === 'percent'
+    ? Number((getSubtotal() * (coupon.value / 100)).toFixed(2))
+    : 0;
+  persistState();
+}
+
+function getStatusMeta(status) {
+  const map = {
+    PAID: { className: 'status-paid', label: 'PAGO' },
+    PENDING: { className: 'status-pending', label: 'PENDENTE' },
+    CANCELLED: { className: 'status-out', label: 'CANCELADO' },
+    ACTIVE: { className: 'status-active', label: 'ATIVO' }
+  };
+  return map[status] || { className: 'status-pending', label: status };
+}
+
+function getPaymentLabel(method) {
+  const labels = {
+    card: 'Cartão',
+    pix: 'PIX',
+    boleto: 'Boleto',
+    debit: 'Débito'
+  };
+  return labels[method] || method;
+}
+
+function getAllOrders() {
+  return [...state.orders, ...DEMO_ORDERS].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+/* ═══════════════════════════════════════════
+   ROUTER
+═══════════════════════════════════════════ */
+function navigate(view) {
+  if (view === 'admin') {
+    const sessionUser = getSessionUser();
+    if (!sessionUser || sessionUser.role !== 'ADMIN') {
+      state.authMode = 'login';
+      persistState();
+      showToast('Acesso administrativo restrito', 'error');
+      view = 'auth';
+    }
+  }
+
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const el = document.getElementById(`view-${view}`);
+  if (el) {
+    el.classList.add('active');
+    window.scrollTo(0,0);
+  }
+  const linkMap = { home:0, catalog:1, admin:4 };
+  const links = document.querySelectorAll('.nav-link');
+  if (linkMap[view] !== undefined) links[linkMap[view]].classList.add('active');
+
+  if (view === 'cart') renderCart();
+  if (view === 'checkout') {
+    prefillCheckoutFields();
+    renderPaymentPanel();
+    renderCheckoutSummary();
+  }
+  if (view === 'admin') renderAdminDashboard();
+  if (view === 'catalog') renderCatalog();
+  if (view === 'home') renderFeatured();
+  if (view === 'auth') renderAuthView();
+}
+
+function updateNavSessionUI() {
+  const button = document.querySelector('.btn-login');
+  const sessionUser = getSessionUser();
+  if (!button) return;
+  button.textContent = sessionUser ? (sessionUser.role === 'ADMIN' ? 'Minha Conta' : 'Minha Conta') : 'Entrar';
+}
+
+function handleSearchInput(value) {
+  state.catalog.search = value.trim();
+  persistState();
+  if (state.catalog.search && document.querySelector('.view.active')?.id !== 'view-catalog') {
+    navigate('catalog');
+    return;
+  }
+  renderCatalog();
+}
+
+/* ═══════════════════════════════════════════
+   RENDER PRODUCTS
+═══════════════════════════════════════════ */
+function productCardHTML(p) {
+  const badgeMap = { new:'badge-new', sale:'badge-sale', hit:'badge-hit' };
+  const badgeLabelMap = { new:'NOVO', sale:'SALE', hit:'HIT' };
+  const favorite = state.favorites.includes(p.id);
+  return `
+    <div class="product-card" onclick="openProduct(${p.id})">
+      <div class="product-img">
+        ${p.badge ? `<span class="product-badge ${badgeMap[p.badge]}">${badgeLabelMap[p.badge]}</span>` : ''}
+        <span>${p.emoji}</span>
+        <div class="product-actions-hover">
+          <button class="action-btn-sm" onclick="event.stopPropagation();openProduct(${p.id})" title="Ver">🔍</button>
+          <button class="action-btn-sm" onclick="event.stopPropagation();addToCart(${p.id})" title="Adicionar">🛒</button>
+          <button class="action-btn-sm" onclick="event.stopPropagation();toggleFavorite(${p.id})" title="Favoritar">${favorite ? '💙' : '🤍'}</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${p.category} · ★ ${p.rating.toFixed(1)}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-foot">
+          <div>
+            <span class="product-price">R$${p.price}</span>
+            ${p.old ? `<span class="product-old-price">R$${p.old}</span>` : ''}
+          </div>
+          <button class="btn-add-cart" onclick="event.stopPropagation();addToCart(${p.id})">+</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getFilteredProducts() {
+  const filters = state.catalog;
+  let products = [...PRODUCTS];
+
+  if (filters.search) {
+    const term = normalizeText(filters.search);
+    products = products.filter(product => normalizeText(`${product.name} ${product.category} ${product.desc}`).includes(term));
+  }
+  if (filters.category !== 'all') {
+    products = products.filter(product => product.cat === filters.category);
+  }
+  if (filters.price === 'up-to-200') products = products.filter(product => product.price <= 200);
+  if (filters.price === '200-400') products = products.filter(product => product.price > 200 && product.price <= 400);
+  if (filters.price === '400-800') products = products.filter(product => product.price > 400 && product.price <= 800);
+  if (filters.price === '800-plus') products = products.filter(product => product.price > 800);
+  if (filters.availability === 'in-stock') products = products.filter(product => product.stock > 0);
+  if (filters.availability === 'low-stock') products = products.filter(product => product.stock > 0 && product.stock <= 10);
+
+  if (filters.sort === 'price-asc') products.sort((a, b) => a.price - b.price);
+  if (filters.sort === 'price-desc') products.sort((a, b) => b.price - a.price);
+  if (filters.sort === 'newest') products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if (filters.sort === 'relevance') products.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || b.rating - a.rating);
+
+  return products;
+}
+
+function syncCatalogControls() {
+  document.querySelectorAll('[data-filter-group]').forEach(option => {
+    option.classList.toggle('active', state.catalog[option.dataset.filterGroup] === option.dataset.value);
+  });
+  const sortSelect = document.getElementById('catalogSortSelect');
+  if (sortSelect) sortSelect.value = state.catalog.sort;
+  const searchInput = document.getElementById('navSearchInput');
+  if (searchInput && searchInput.value !== state.catalog.search) searchInput.value = state.catalog.search;
+}
+
+function syncHomeFilters() {
+  const map = {
+    'Todos': 'all',
+    'Hoodies': 'hoodies',
+    'Camisetas': 'tshirts',
+    'Bonés': 'caps',
+    'Tênis': 'sneakers'
+  };
+  document.querySelectorAll('.filter-btn').forEach(button => {
+    button.classList.toggle('active', map[button.textContent.trim()] === state.homeCategory);
+  });
+}
+
+function renderFeatured() {
+  const grid = document.getElementById('featuredGrid');
+  if (!grid) return;
+  let featured = PRODUCTS.filter(product => product.featured);
+  if (state.homeCategory !== 'all') featured = featured.filter(product => product.cat === state.homeCategory);
+  grid.innerHTML = featured.length
+    ? featured.map(productCardHTML).join('')
+    : '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">❄</div><div class="empty-title">Nenhum destaque nessa categoria</div><div class="empty-sub">Troque o filtro ou explore o catálogo completo</div></div>';
+  syncHomeFilters();
+}
+
+function renderCatalog() {
+  const grid = document.getElementById('catalogGrid');
+  const count = document.getElementById('catalogCount');
+  if (!grid) return;
+  const products = getFilteredProducts();
+  grid.innerHTML = products.length
+    ? products.map(productCardHTML).join('')
+    : '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔎</div><div class="empty-title">Nenhum produto encontrado</div><div class="empty-sub">Ajuste busca, categoria ou faixa de preço</div></div>';
+  if (count) count.textContent = `${products.length} produtos encontrados`;
+  syncCatalogControls();
+}
+
+function filterProducts(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.homeCategory = cat;
+  persistState();
+  renderFeatured();
+}
+
+function setCatalogCategory(value) {
+  state.catalog.category = value;
+  persistState();
+  renderCatalog();
+}
+
+function setCatalogPrice(value) {
+  state.catalog.price = value;
+  persistState();
+  renderCatalog();
+}
+
+function setCatalogAvailability(value) {
+  state.catalog.availability = value;
+  persistState();
+  renderCatalog();
+}
+
+function setCatalogSort(value) {
+  state.catalog.sort = value;
+  persistState();
+  renderCatalog();
+}
+
+function toggleFavorite(id) {
+  const favorites = new Set(state.favorites);
+  if (favorites.has(id)) {
+    favorites.delete(id);
+    showToast('Produto removido dos favoritos', 'info');
+  } else {
+    favorites.add(id);
+    showToast('Produto adicionado aos favoritos', 'success');
+  }
+  state.favorites = [...favorites];
+  persistState();
+  renderFeatured();
+  renderCatalog();
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCT MODAL
+═══════════════════════════════════════════ */
+function openProduct(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-img">${p.emoji}</div>
+    <div class="modal-details">
+      <div class="modal-cat">${p.category}</div>
+      <div class="modal-name">${p.name}</div>
+      <div class="modal-price">R$${p.price},00</div>
+      <p class="modal-desc">${p.desc}</p>
+      <div class="size-label">Tamanho</div>
+      <div class="sizes">
+        ${['P','M','G','GG','XGG'].map((s,i) => `<button class="size-btn${i===1?' active':''}" onclick="this.parentNode.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${s}</button>`).join('')}
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center" onclick="addToCart(${p.id});closeModal()">
+        🛒 Adicionar ao Carrinho
+      </button>
+    </div>
+  `;
+  document.getElementById('productModal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('productModal').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════════
+   CART
+═══════════════════════════════════════════ */
+function addToCart(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const existing = state.cart.find(i => i.id === id);
+  if (existing && existing.qty >= p.stock) {
+    showToast('Estoque máximo atingido para este item', 'error');
+    return;
+  }
+  if (existing) existing.qty += 1;
+  else state.cart.push({ ...p, qty: 1 });
+  recalculateDiscount();
+  updateCartBadge();
+  renderCart();
+  renderCheckoutSummary();
+  showToast(`${p.emoji} ${p.name} adicionado ao carrinho!`, 'success');
+}
+
+function removeFromCart(id) {
+  state.cart = state.cart.filter(i => i.id !== id);
+  recalculateDiscount();
+  updateCartBadge();
+  renderCart();
+  renderCheckoutSummary();
+}
+
+function changeQty(id, delta) {
+  const item = state.cart.find(i => i.id === id);
+  if (!item) return;
+  if (delta > 0 && item.qty >= item.stock) {
+    showToast('Sem mais unidades disponíveis em estoque', 'error');
+    return;
+  }
+  item.qty = Math.max(1, item.qty + delta);
+  recalculateDiscount();
+  renderCart();
+  updateCartBadge();
+  renderCheckoutSummary();
+}
+
+function updateCartBadge() {
+  const total = state.cart.reduce((a, i) => a + i.qty, 0);
+  const badge = document.getElementById('cartBadge');
+  if (!badge) return;
+  badge.textContent = total;
+  badge.classList.toggle('show', total > 0);
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  const label = document.getElementById('cartCountLabel');
+  const totalItems = state.cart.reduce((a, i) => a + i.qty, 0);
+  if (label) label.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'itens'}`;
+  if (!container) return;
+
+  if (state.cart.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-title">Carrinho vazio</div><div class="empty-sub">Adicione produtos para continuar</div></div>`;
+  } else {
+    container.innerHTML = state.cart.map(item => `
+      <div class="cart-item">
+        <div class="cart-item-img">${item.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-sku">SKU-ZG-${String(item.id).padStart(4,'0')}</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+        <div class="cart-item-price">R$${(item.price * item.qty).toLocaleString('pt-BR')}</div>
+        <button class="btn-remove" onclick="removeFromCart(${item.id})">✕</button>
+      </div>
+    `).join('');
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const sub = getSubtotal();
+  const disc = getDiscountAmount();
+  const shipping = getShippingCost();
+  const total = getOrderTotal();
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setEl('subtotalVal', formatCurrency(sub));
+  setEl('freteVal', shipping === 0 ? 'Grátis' : formatCurrency(shipping));
+  setEl('discountVal', `— ${formatCurrency(disc)}`);
+  setEl('totalVal', formatCurrency(total));
+}
+
+function applyCoupon() {
+  const code = document.getElementById('couponInput').value.trim().toUpperCase();
+  if (!state.cart.length) {
+    showToast('Adicione itens ao carrinho antes de aplicar cupom', 'error');
+    return;
+  }
+  if (!COUPONS[code]) {
+    showToast('Cupom inválido ou expirado', 'error');
+    return;
+  }
+  state.couponCode = code;
+  recalculateDiscount();
+  updateSummary();
+  renderCheckoutSummary();
+  showToast(`Cupom aplicado: ${COUPONS[code].label}`, 'success');
+}
+
+/* ═══════════════════════════════════════════
+   CHECKOUT
+═══════════════════════════════════════════ */
+function renderCheckoutSummary() {
+  const container = document.getElementById('checkoutItems');
+  const sub = getSubtotal();
+  const shipping = getShippingCost();
+  const discount = getDiscountAmount();
+  const total = getOrderTotal();
+  if (container) {
+    container.innerHTML = state.cart.length === 0
+      ? '<div style="color:var(--c-fog);font-size:0.85rem;padding:12px 0">Carrinho vazio</div>'
+      : state.cart.map(i => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="font-size:1.6rem">${i.emoji}</span>
+          <div style="flex:1">
+            <div style="font-size:0.85rem;font-weight:500">${i.name}</div>
+            <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--c-fog)">Qtd: ${i.qty}</div>
+          </div>
+          <span style="font-family:var(--font-display);font-size:1.1rem">${formatCurrency(i.price * i.qty)}</span>
+        </div>
+      `).join('');
+    const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    setEl('coSubtotal', formatCurrency(sub));
+    setEl('coShipping', shipping === 0 ? 'Grátis' : formatCurrency(shipping));
+    setEl('coDiscount', `— ${formatCurrency(discount)}`);
+    setEl('coTotal', formatCurrency(total));
+  }
+  updateCheckoutCTA();
+}
+
+function selectPayment(el) {
+  state.checkout.paymentMethod = el.dataset.method;
+  persistState();
+  renderPaymentPanel();
+  renderCheckoutSummary();
+}
+
+function formatCard(input) {
+  let v = input.value.replace(/\D/g,'').substring(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function prefillCheckoutFields() {
+  const sessionUser = getSessionUser();
+  const customer = state.checkout.customer || {};
+  const defaults = {
+    checkoutName: customer.name || sessionUser?.name || '',
+    checkoutEmail: customer.email || sessionUser?.email || '',
+    checkoutCpf: customer.cpf || '',
+    checkoutPhone: customer.phone || '',
+    checkoutAddress: customer.address || '',
+    checkoutZip: customer.zip || '',
+    checkoutCity: customer.city || '',
+    checkoutState: customer.state || ''
+  };
+  Object.entries(defaults).forEach(([id, value]) => {
+    const input = document.getElementById(id);
+    if (input && !input.value) input.value = value;
+  });
+}
+
+function captureCheckoutData() {
+  const data = {
+    name: document.getElementById('checkoutName')?.value.trim() || '',
+    email: document.getElementById('checkoutEmail')?.value.trim() || '',
+    cpf: document.getElementById('checkoutCpf')?.value.trim() || '',
+    phone: document.getElementById('checkoutPhone')?.value.trim() || '',
+    address: document.getElementById('checkoutAddress')?.value.trim() || '',
+    zip: document.getElementById('checkoutZip')?.value.trim() || '',
+    city: document.getElementById('checkoutCity')?.value.trim() || '',
+    state: document.getElementById('checkoutState')?.value.trim() || ''
+  };
+  state.checkout.customer = data;
+  persistState();
+  return data;
+}
+
+function renderPaymentPanel() {
+  const panel = document.getElementById('paymentDynamicPanel');
+  if (!panel) return;
+  const method = state.checkout.paymentMethod;
+  document.querySelectorAll('.pay-method').forEach(item => {
+    item.classList.toggle('selected', item.dataset.method === method);
+  });
+
+  if (method === 'pix') {
+    panel.innerHTML = `
+      <div class="spec-label">Pagamento Instantâneo</div>
+      <div class="spec-title">PIX com confirmação imediata</div>
+      <p class="payment-note">Gere o QR Code no backend de pagamento, confirme em segundos e libere o pedido automaticamente via webhook.</p>
+      <div class="auth-helper">Mercado Pago / Stripe / gateway nacional compatível.</div>`;
+  } else if (method === 'boleto') {
+    panel.innerHTML = `
+      <div class="spec-label">Pagamento Assíncrono</div>
+      <div class="spec-title">Boleto registrado</div>
+      <p class="payment-note">Boleto com vencimento em 3 dias úteis, atualização de status por polling ou webhook e conciliação automática do pedido.</p>
+      <div class="auth-helper">Status inicial do pedido: pendente até compensação bancária.</div>`;
+  } else {
+    panel.innerHTML = `
+      <div class="form-row single">
+        <div class="field">
+          <label class="field-label">Número do Cartão</label>
+          <input class="field-input" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+        </div>
+      </div>
+      <div class="form-row triple">
+        <div class="field" style="grid-column:1/3">
+          <label class="field-label">Nome no Cartão</label>
+          <input class="field-input" id="cardHolder" placeholder="JOAO DA SILVA">
+        </div>
+        <div class="field">
+          <label class="field-label">CVV</label>
+          <input class="field-input" id="cardCvv" placeholder="000" maxlength="3">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label class="field-label">Validade</label>
+          <input class="field-input" id="cardExpiry" placeholder="MM/AA" maxlength="5">
+        </div>
+        <div class="field">
+          <label class="field-label">Parcelas</label>
+          <select class="field-input sort-select" id="cardInstallments" style="background:var(--c-carbon)">
+            <option>1x sem juros</option>
+            <option>2x sem juros</option>
+            <option>3x sem juros</option>
+            <option>6x sem juros</option>
+            <option>12x sem juros</option>
+          </select>
+        </div>
+      </div>
+      <div class="auth-helper">${method === 'debit' ? 'Débito com captura imediata e desconto operacional de 5% na régua comercial.' : 'Cartão protegido com tokenização e antifraude.'}</div>`;
+  }
+}
+
+function updateCheckoutCTA() {
+  const button = document.getElementById('checkoutConfirmBtn');
+  if (!button) return;
+  const iconMap = { card: '🔒', pix: '⚡', boleto: '📄', debit: '💳' };
+  button.textContent = `${iconMap[state.checkout.paymentMethod] || '🔒'} Confirmar Pedido — ${formatCurrency(getOrderTotal())}`;
+}
+
+function confirmOrder() {
+  if (!state.cart.length) {
+    showToast('Carrinho vazio. Adicione itens para finalizar o checkout.', 'error');
+    return;
+  }
+
+  const customer = captureCheckoutData();
+  const requiredValues = Object.values(customer);
+  if (requiredValues.some(value => !value)) {
+    showToast('Preencha todos os dados pessoais e de entrega', 'error');
+    return;
+  }
+
+  if (['card', 'debit'].includes(state.checkout.paymentMethod)) {
+    const cardNumber = document.getElementById('cardNumber')?.value.trim();
+    const cardHolder = document.getElementById('cardHolder')?.value.trim();
+    const cardCvv = document.getElementById('cardCvv')?.value.trim();
+    if (!cardNumber || !cardHolder || !cardCvv) {
+      showToast('Preencha os dados do cartão para continuar', 'error');
+      return;
+    }
+  }
+
+  showToast(`⚡ Processando pagamento via ${getPaymentLabel(state.checkout.paymentMethod)}...`, 'info');
+  setTimeout(() => {
+    const sessionUser = getSessionUser();
+    const orderId = `ZG-${String(1000 + state.orders.length + 1).padStart(4, '0')}`;
+    const status = state.checkout.paymentMethod === 'boleto' ? 'PENDING' : 'PAID';
+    state.orders.unshift({
+      id: orderId,
+      createdAt: new Date().toISOString(),
+      status,
+      payment: state.checkout.paymentMethod,
+      total: getOrderTotal(),
+      subtotal: getSubtotal(),
+      shipping: getShippingCost(),
+      discount: getDiscountAmount(),
+      items: state.cart.map(item => ({ ...item })),
+      userId: sessionUser ? sessionUser.id : null,
+      customer
+    });
+    if (sessionUser) {
+      sessionUser.name = customer.name;
+      sessionUser.email = customer.email;
+    }
+    state.cart = [];
+    state.discount = 0;
+    state.couponCode = '';
+    persistState();
+    updateCartBadge();
+    renderCart();
+    renderCheckoutSummary();
+    renderAuthView();
+    showToast(status === 'PAID' ? '✅ Pedido confirmado! Verifique seu e-mail.' : '✅ Pedido criado! Aguardando compensação do boleto.', 'success');
+    setTimeout(() => navigate(sessionUser ? 'auth' : 'home'), 1200);
+  }, 1500);
+}
+
+/* ═══════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════ */
+function renderAuthView() {
+  const panel = document.getElementById('authPanel');
+  if (!panel) return;
+  const sessionUser = getSessionUser();
+
+  if (sessionUser) {
+    const userOrders = getAllOrders().filter(order => order.userId === sessionUser.id);
+    panel.innerHTML = `
+      <div class="auth-title">MINHA CONTA</div>
+      <div class="auth-sub">Acompanhe pedidos, dados de conta e acesso administrativo quando disponível.</div>
+      <div class="account-card">
+        <div class="account-label">Perfil</div>
+        <div class="account-title">${sessionUser.name}</div>
+        <p class="account-copy">Sessão autenticada com JWT, expiração automática e fluxo preparado para refresh token.</p>
+        <div class="roadmap-points" style="margin-top:18px">
+          <div class="account-meta"><span>E-mail</span><span class="pill">${sessionUser.email}</span></div>
+          <div class="account-meta"><span>Papel</span><span class="pill">${sessionUser.role}</span></div>
+          <div class="account-meta"><span>Cadastro</span><span class="pill">${formatDate(sessionUser.createdAt)}</span></div>
+        </div>
+      </div>
+      <div class="auth-actions">
+        <button class="btn-auth" style="margin-bottom:0" onclick="navigate('catalog')">Explorar Catálogo</button>
+        ${sessionUser.role === 'ADMIN' ? '<button class="btn-oauth" onclick="navigate(\'admin\')">Abrir Admin</button>' : ''}
+        <button class="btn-oauth" onclick="logout()">Sair</button>
+      </div>
+      <div class="history-list">
+        ${userOrders.length ? userOrders.map(order => `
+          <div class="history-item">
+            <div class="history-main">
+              <div class="history-title">Pedido ${order.id}</div>
+              <div class="history-sub">${formatDate(order.createdAt)} · ${getPaymentLabel(order.payment)} · ${order.items.map(item => `${item.name} x${item.qty}`).join(', ')}</div>
+            </div>
+            <div class="history-total">${formatCurrency(order.total)}</div>
+          </div>
+        `).join('') : '<div class="account-card"><div class="account-label">Pedidos</div><div class="account-copy">Nenhum pedido ainda. Finalize uma compra para começar seu histórico.</div></div>'}
+      </div>`;
+    return;
+  }
+
+  if (state.authMode === 'register') {
+    panel.innerHTML = `
+      <div class="auth-title">CRIAR CONTA</div>
+      <div class="auth-sub">Cadastro rápido preparado para RF-01, LGPD e futura MFA.</div>
+      <div class="auth-form">
+        <div class="auth-field"><label class="auth-label">Nome</label><input class="auth-input" id="registerName" placeholder="Seu nome completo"></div>
+        <div class="auth-field"><label class="auth-label">E-mail</label><input class="auth-input" id="registerEmail" type="email" placeholder="seu@email.com"></div>
+        <div class="auth-field"><label class="auth-label">Senha</label><input class="auth-input" id="registerPass" type="password" placeholder="Crie uma senha forte"></div>
+        <div class="auth-field"><label class="auth-label">Confirmar Senha</label><input class="auth-input" id="registerConfirm" type="password" placeholder="Repita a senha"></div>
+        <button class="btn-auth" onclick="doRegister()">Criar Conta</button>
+        <div class="auth-switch">Já tem conta? <span class="auth-switch-link" onclick="showLogin()">Entrar</span></div>
+      </div>`;
+    return;
+  }
+
+  if (state.authMode === 'forgot') {
+    panel.innerHTML = `
+      <div class="auth-title">RECUPERAR ACESSO</div>
+      <div class="auth-sub">Fluxo de recuperação alinhado a RF-03 com envio de link temporário.</div>
+      <div class="auth-form">
+        <div class="auth-field"><label class="auth-label">E-mail</label><input class="auth-input" id="forgotEmail" type="email" placeholder="seu@email.com"></div>
+        <button class="btn-auth" onclick="recoverPassword()">Enviar Link</button>
+        <div class="auth-switch">Lembrou a senha? <span class="auth-switch-link" onclick="showLogin()">Voltar ao login</span></div>
+      </div>`;
+    return;
+  }
+
+  panel.innerHTML = `
+    <div class="auth-title">ENTRAR</div>
+    <div class="auth-sub">Bem-vindo de volta. Faça login com JWT ou continue com OAuth2.</div>
+    <div class="auth-form">
+      <div class="auth-field"><label class="auth-label">E-mail</label><input class="auth-input" type="email" placeholder="seu@email.com" id="loginEmail"></div>
+      <div class="auth-field"><label class="auth-label">Senha</label><input class="auth-input" type="password" placeholder="••••••••" id="loginPass"></div>
+      <div class="auth-options">
+        <label class="auth-check"><input type="checkbox"> Lembrar-me</label>
+        <a class="auth-forgot" onclick="showForgotPassword()">Esqueceu a senha?</a>
+      </div>
+      <button class="btn-auth" onclick="doLogin()">Entrar</button>
+      <div class="auth-divider">ou continue com</div>
+      <div class="oauth-btns">
+        <button class="btn-oauth" onclick="showToast('OAuth Google planejado no gateway de auth', 'info')">🔵 Google</button>
+        <button class="btn-oauth" onclick="showToast('OAuth Apple planejado no gateway de auth', 'info')">⚫ Apple</button>
+        <button class="btn-oauth" onclick="showToast('OAuth Facebook planejado no gateway de auth', 'info')">🔷 Facebook</button>
+      </div>
+      <div class="auth-switch">Não tem conta? <span class="auth-switch-link" onclick="showRegister()">Criar conta</span></div>
+      <div class="auth-helper">Use <strong>admin@zerograu.com / admin123</strong> para o modo admin ou qualquer cliente demo com senha <strong>cliente123</strong>.</div>
+    </div>`;
+}
+
+function showLogin() {
+  state.authMode = 'login';
+  persistState();
+  renderAuthView();
+}
+
+function showRegister() {
+  state.authMode = 'register';
+  persistState();
+  renderAuthView();
+}
+
+function showForgotPassword() {
+  state.authMode = 'forgot';
+  persistState();
+  renderAuthView();
+}
+
+function doLogin() {
+  const email = document.getElementById('loginEmail')?.value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass')?.value.trim();
+  if (!email || !pass) {
+    showToast('Preencha todos os campos', 'error');
+    return;
+  }
+  const user = state.users.find(item => item.email.toLowerCase() === email && item.password === pass);
+  if (!user) {
+    showToast('Credenciais inválidas', 'error');
+    return;
+  }
+  showToast('🔐 Autenticando via JWT...', 'info');
+  setTimeout(() => {
+    setSessionUser(user.id);
+    state.authMode = 'login';
+    persistState();
+    prefillCheckoutFields();
+    renderAuthView();
+    showToast('✅ Login realizado com sucesso!', 'success');
+    navigate('home');
+  }, 800);
+}
+
+function doRegister() {
+  const name = document.getElementById('registerName')?.value.trim();
+  const email = document.getElementById('registerEmail')?.value.trim().toLowerCase();
+  const password = document.getElementById('registerPass')?.value.trim();
+  const confirm = document.getElementById('registerConfirm')?.value.trim();
+  if (!name || !email || !password || !confirm) {
+    showToast('Preencha todos os campos do cadastro', 'error');
+    return;
+  }
+  if (password !== confirm) {
+    showToast('As senhas não conferem', 'error');
+    return;
+  }
+  if (state.users.some(user => user.email.toLowerCase() === email)) {
+    showToast('Já existe uma conta com este e-mail', 'error');
+    return;
+  }
+  const user = {
+    id: Math.max(...state.users.map(item => item.id), 0) + 1,
+    name,
+    email,
+    password,
+    role: 'CUSTOMER',
+    createdAt: new Date().toISOString()
+  };
+  state.users.push(user);
+  setSessionUser(user.id);
+  state.authMode = 'login';
+  persistState();
+  prefillCheckoutFields();
+  renderAuthView();
+  showToast('✅ Conta criada com sucesso!', 'success');
+}
+
+function recoverPassword() {
+  const email = document.getElementById('forgotEmail')?.value.trim().toLowerCase();
+  if (!email) {
+    showToast('Informe o e-mail cadastrado', 'error');
+    return;
+  }
+  const exists = state.users.some(user => user.email.toLowerCase() === email);
+  if (!exists) {
+    showToast('Nenhuma conta encontrada para este e-mail', 'error');
+    return;
+  }
+  showToast('Link de recuperação enviado com sucesso', 'success');
+  showLogin();
+}
+
+function logout() {
+  state.sessionUserId = null;
+  persistState();
+  updateNavSessionUI();
+  renderAuthView();
+  showToast('Sessão encerrada', 'info');
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN
+═══════════════════════════════════════════ */
+function adminNav(btn, page) {
+  document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminPage(page);
+}
+
+function renderAdminDashboard() {
+  renderAdminPage('dashboard');
+}
+
+function renderAdminPage(page) {
+  const main = document.getElementById('adminMain');
+  const orders = getAllOrders();
+  const revenue = orders.reduce((acc, order) => acc + Number(order.total || 0), 0);
+  const pendingOrders = orders.filter(order => order.status === 'PENDING').length;
+  const paidOrders = orders.filter(order => order.status === 'PAID').length;
+  const avgTicket = orders.length ? revenue / orders.length : 0;
+  const topCategory = PRODUCTS.reduce((acc, product) => {
+    acc[product.category] = (acc[product.category] || 0) + 1;
+    return acc;
+  }, {});
+  const topCategoryLabel = Object.entries(topCategory).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Hoodies';
+
+  if (page === 'dashboard') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">DASHBOARD</div>
+      <div class="admin-page-sub fade-up delay-1">Visão geral operacional da plataforma, alinhada ao roadmap do SPEC.</div>
+      <div class="kpi-grid fade-up delay-1">
+        <div class="kpi-card k1">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-label">Receita Total</div>
+          <div class="kpi-val">${formatCurrency(revenue)}</div>
+          <div class="kpi-change up">↑ Receita consolidada de pedidos pagos</div>
+        </div>
+        <div class="kpi-card k2">
+          <div class="kpi-icon">🛒</div>
+          <div class="kpi-label">Pedidos</div>
+          <div class="kpi-val">${orders.length}</div>
+          <div class="kpi-change up">${paidOrders} pagos · ${pendingOrders} pendentes</div>
+        </div>
+        <div class="kpi-card k3">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-label">Usuários</div>
+          <div class="kpi-val">${state.users.length}</div>
+          <div class="kpi-change up">Base autenticável com RBAC</div>
+        </div>
+        <div class="kpi-card k4">
+          <div class="kpi-icon">📦</div>
+          <div class="kpi-label">Ticket Médio</div>
+          <div class="kpi-val">${formatCurrency(avgTicket)}</div>
+          <div class="kpi-change down">Top categoria: ${topCategoryLabel}</div>
+        </div>
+      </div>
+      <div class="chart-row fade-up delay-2">
+        <div class="chart-card">
+          <div class="chart-card-title">// Receita Mensal (2025)</div>
+          <div class="chart-bars">
+            ${[['Jan',45],['Fev',60],['Mar',55],['Abr',80],['Mai',95],['Jun',70],['Jul',88],['Ago',100],['Set',75],['Out',90],['Nov',85],['Dez',65]].map(([m,h]) => `
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:${h}%"></div>
+                <div class="chart-label">${m}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-title">// Categorias</div>
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#1a1a1a" stroke-width="20"/>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#00BFFF" stroke-width="20" stroke-dasharray="120 181" stroke-dashoffset="0"/>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#52C41A" stroke-width="20" stroke-dasharray="60 241" stroke-dashoffset="-120"/>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#FAAD14" stroke-width="20" stroke-dasharray="40 261" stroke-dashoffset="-180"/>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#FF4D4F" stroke-width="20" stroke-dasharray="81 220" stroke-dashoffset="-220"/>
+              <text x="60" y="64" text-anchor="middle" fill="#fff" font-size="14" font-family="Bebas Neue">48</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="donut-item"><div class="donut-dot" style="background:#00BFFF"></div>Hoodies<span class="donut-pct">40%</span></div>
+              <div class="donut-item"><div class="donut-dot" style="background:#52C41A"></div>Camisetas<span class="donut-pct">20%</span></div>
+              <div class="donut-item"><div class="donut-dot" style="background:#FAAD14"></div>Bonés<span class="donut-pct">13%</span></div>
+              <div class="donut-item"><div class="donut-dot" style="background:#FF4D4F"></div>Outros<span class="donut-pct">27%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-card fade-up delay-3">
+        <div class="table-head">
+          <span class="table-title">// Últimos Pedidos</span>
+          <button class="btn-table-action" onclick="adminNav(document.querySelectorAll('.admin-nav-item')[2], 'orders')">Ver todos</button>
+        </div>
+        <table>
+          <thead><tr>
+            <th>Pedido</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Data</th><th>Ações</th>
+          </tr></thead>
+          <tbody>
+            ${orders.slice(0, 5).map(order => {
+              const status = getStatusMeta(order.status);
+              return `
+              <tr>
+                <td><span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--c-ice)">${order.id}</span></td>
+                <td>${order.customer?.name || 'Guest'}</td>
+                <td>${order.items.map(item => item.name).join(', ')}</td>
+                <td><span style="font-family:var(--font-mono);font-weight:700">${formatCurrency(order.total)}</span></td>
+                <td><span class="status-badge ${status.className}">${status.label}</span></td>
+                <td><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--c-fog)">${formatDate(order.createdAt)}</span></td>
+                <td><div class="td-actions">
+                  <button class="btn-icon-sm" onclick="showToast('Detalhes do pedido ${order.id}', 'info')">👁</button>
+                  <button class="btn-icon-sm" onclick="showToast('Fluxo logístico do pedido ${order.id}', 'info')">📦</button>
+                </div></td>
+              </tr>
+            `; }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  else if (page === 'products') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">PRODUTOS</div>
+      <div class="admin-page-sub fade-up delay-1">Gerencie o catálogo — Spring Boot /api/products</div>
+      <div class="table-card fade-up delay-2">
+        <div class="table-head">
+          <span class="table-title">// Catálogo (${PRODUCTS.length} produtos)</span>
+          <button class="btn-table-action" onclick="showToast('Modal de cadastro — RF-07 ✓','info')">+ Novo Produto</button>
+        </div>
+        <table>
+          <thead><tr>
+            <th>Produto</th><th>SKU</th><th>Preço</th><th>Estoque</th><th>Categoria</th><th>Status</th><th>Ações</th>
+          </tr></thead>
+          <tbody>
+            ${PRODUCTS.map(p => `
+              <tr>
+                <td><div class="td-product">
+                  <div class="td-thumb">${p.emoji}</div>
+                  <div><div class="td-name">${p.name}</div></div>
+                </div></td>
+                <td><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-fog)">ZG-${String(p.id).padStart(4,'0')}</span></td>
+                <td><span style="font-family:var(--font-display);font-size:1.1rem">R$${p.price}</span></td>
+                <td><span style="font-family:var(--font-mono);font-size:0.8rem">${p.stock}</span></td>
+                <td>${p.category}</td>
+                <td><span class="status-badge ${p.stock > 5 ? 'status-active' : 'status-out'}">${p.stock > 5 ? 'ATIVO' : 'ESGOTADO'}</span></td>
+                <td><div class="td-actions">
+                  <button class="btn-icon-sm" onclick="openProduct(${p.id})">👁</button>
+                  <button class="btn-icon-sm" onclick="showToast('Editando ${p.name}','info')">✏️</button>
+                  <button class="btn-icon-sm" onclick="showToast('Item excluído','error')">🗑</button>
+                </div></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  else if (page === 'orders') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">PEDIDOS</div>
+      <div class="admin-page-sub fade-up delay-1">Gestão de pedidos — GET /api/orders</div>
+      <div class="kpi-grid fade-up delay-1" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi-card k1"><div class="kpi-label">Aguardando Aprovação</div><div class="kpi-val">${pendingOrders}</div></div>
+        <div class="kpi-card k2"><div class="kpi-label">Pagos</div><div class="kpi-val">${paidOrders}</div></div>
+        <div class="kpi-card k3"><div class="kpi-label">Ticket Médio</div><div class="kpi-val">${formatCurrency(avgTicket)}</div></div>
+      </div>
+      <div class="table-card fade-up delay-2">
+        <div class="table-head">
+          <span class="table-title">// Todos os Pedidos</span>
+          <button class="btn-table-action">Exportar CSV</button>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Cliente</th><th>Total</th><th>Status</th><th>Pagamento</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody>
+            ${orders.map(order => {
+              const status = getStatusMeta(order.status);
+              return `<tr>
+                <td><span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--c-ice)">${order.id}</span></td>
+                <td>${order.customer?.name || 'Guest'}</td>
+                <td><span style="font-family:var(--font-mono);font-weight:700">${formatCurrency(order.total)}</span></td>
+                <td><span class="status-badge ${status.className}">${status.label}</span></td>
+                <td><span class="status-badge status-active">${getPaymentLabel(order.payment)}</span></td>
+                <td><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--c-fog)">${formatDate(order.createdAt)}</span></td>
+                <td><div class="td-actions">
+                  <button class="btn-icon-sm" onclick="showToast('Visualizando ${order.id}', 'info')">👁</button>
+                  <button class="btn-icon-sm" onclick="showToast('Atualização logística registrada', 'success')">📦</button>
+                </div></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  else if (page === 'users') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">USUÁRIOS</div>
+      <div class="admin-page-sub fade-up delay-1">Controle de acesso — Spring Security + JWT</div>
+      <div class="table-card fade-up delay-2">
+        <div class="table-head">
+          <span class="table-title">// Usuários Cadastrados (${state.users.length})</span>
+          <button class="btn-table-action">+ Convidar</button>
+        </div>
+        <table>
+          <thead><tr><th>Usuário</th><th>E-mail</th><th>Papel</th><th>Status</th><th>Cadastro</th><th>Ações</th></tr></thead>
+          <tbody>
+            ${state.users.map(user => `
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:36px;height:36px;background:var(--c-ash);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700">${user.name[0]}</div>
+                  <span style="font-weight:500">${user.name}</span>
+                </div></td>
+                <td><span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--c-fog)">${user.email}</span></td>
+                <td><span class="status-badge ${user.role === 'ADMIN' ? 'status-paid' : 'status-active'}">${user.role}</span></td>
+                <td><span class="status-badge status-active">ATIVO</span></td>
+                <td><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-fog)">${formatDate(user.createdAt)}</span></td>
+                <td><div class="td-actions">
+                  <button class="btn-icon-sm">✏️</button>
+                  <button class="btn-icon-sm" onclick="showToast('Usuário bloqueado','error')">🚫</button>
+                </div></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  else if (page === 'coupons') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">CUPONS</div>
+      <div class="admin-page-sub fade-up delay-1">Gestão comercial e regras promocionais do checkout.</div>
+      <div class="admin-inline-grid fade-up delay-2">
+        ${Object.entries(COUPONS).map(([code, coupon]) => `
+          <div class="spec-card">
+            <div class="spec-label">${code}</div>
+            <div class="spec-title">${coupon.type === 'percent' ? `${coupon.value}% OFF` : 'Frete Grátis'}</div>
+            <p class="spec-copy">${coupon.label}</p>
+            <div class="auth-actions"><button class="btn-oauth" onclick="showToast('Cupom ${code} enviado para CRM', 'success')">Sincronizar</button></div>
+          </div>
+        `).join('')}
+      </div>`;
+  }
+
+  else if (page === 'config') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">CONFIGURAÇÕES</div>
+      <div class="admin-page-sub fade-up delay-1">Ambientes, segurança e readiness de deploy.</div>
+      <div class="admin-inline-grid fade-up delay-2">
+        ${ENVIRONMENTS.map(env => `
+          <div class="spec-card">
+            <div class="spec-label">${env.name}</div>
+            <div class="spec-title">${env.status}</div>
+            <p class="spec-copy">${env.detail}</p>
+          </div>
+        `).join('')}
+      </div>
+      <div class="table-card fade-up delay-3">
+        <div class="table-head"><span class="table-title">// Controles de Segurança</span></div>
+        <table>
+          <thead><tr><th>Controle</th><th>Estado</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>JWT + Refresh Token</td><td><span class="status-badge status-active">ATIVO</span></td><td>Preparado no fluxo de auth</td></tr>
+            <tr><td>CORS + Rate Limiting</td><td><span class="status-badge status-active">ATIVO</span></td><td>Aplicado no gateway</td></tr>
+            <tr><td>OWASP / CSP / TLS 1.3</td><td><span class="status-badge status-active">ATIVO</span></td><td>Diretriz operacional do SPEC</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  else if (page === 'logs') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">LOGS</div>
+      <div class="admin-page-sub fade-up delay-1">Visão centralizada de eventos críticos, auditoria e rastreabilidade.</div>
+      <div class="log-list fade-up delay-2">
+        <div class="log-label">ELK Stack</div>
+        ${LOG_ENTRIES.map(log => `
+          <div class="log-item">
+            <div class="log-main">
+              <div class="log-title">${log.title}</div>
+              <div class="log-sub">${log.detail}</div>
+            </div>
+            <div>
+              <div class="pill">${log.level}</div>
+              <div class="auth-helper" style="margin-top:8px;text-align:right">${log.timestamp}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+  }
+
+  else if (page === 'metrics') {
+    main.innerHTML = `
+      <div class="admin-page-title fade-up">MÉTRICAS</div>
+      <div class="admin-page-sub fade-up delay-1">Prometheus, Grafana e indicadores de saúde operacional.</div>
+      <div class="admin-inline-grid fade-up delay-2">
+        ${METRICS.map(metric => `
+          <div class="metric-list">
+            <div class="metric-label">${metric.title}</div>
+            <div class="spec-title">${metric.value}</div>
+            <p class="metric-copy">${metric.detail}</p>
+          </div>
+        `).join('')}
+      </div>
+      <div class="table-card fade-up delay-3">
+        <div class="table-head"><span class="table-title">// Observabilidade</span></div>
+        <table>
+          <thead><tr><th>Camada</th><th>Ferramenta</th><th>Objetivo</th></tr></thead>
+          <tbody>
+            <tr><td>Logs</td><td>ELK Stack</td><td>Centralização e busca</td></tr>
+            <tr><td>Métricas</td><td>Prometheus + Grafana</td><td>SLIs, alertas e dashboards</td></tr>
+            <tr><td>Tracing</td><td>OpenTelemetry</td><td>Correlação entre serviços</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+function showToast(msg, type = 'info') {
+  const wrap = document.getElementById('toastWrap');
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+  wrap.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  if (state.couponCode) {
+    const couponInput = document.getElementById('couponInput');
+    if (couponInput) couponInput.value = state.couponCode;
+  }
+  updateNavSessionUI();
+  renderAuthView();
+  prefillCheckoutFields();
+  renderPaymentPanel();
+  renderFeatured();
+  renderCatalog();
+  updateCartBadge();
+  updateSummary();
+  renderCheckoutSummary();
+  // Close modal on overlay click
+  document.getElementById('productModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+});
+</script>
+</body>
+</html>
